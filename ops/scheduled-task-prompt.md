@@ -2,7 +2,7 @@
 
 - Név: Benzinárak napi frissítése
 - Azonosító: `trig_01DvQepk78PsfNFpNJxJjt8F`
-- Ütemezés: `CRON_TZ=Europe/Budapest 3 7 * * *` (minden nap 7:03, budapesti idő)
+- Ütemezés: `CRON_TZ=CET 20 10 * * *` (minden nap 10:20, CET; a holtankoljak hétköznap 10 óráig közli a napi országos átlagot)
 - Futás: a felhőben, minden alkalommal új munkamenetben, automatikus jóváhagyással
 - Ez a fájl a feladat utasításainak verziókezelt másolata. Ha az utasítás változik, itt is frissíteni kell, ugyanabban a PR-ban.
 

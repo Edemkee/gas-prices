@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.0 - 2026-11-12
+### Changed
+- A napi frissítés 7:03 helyett 10:20-kor fut, CET időzónában: a holtankoljak hétköznap 10 óráig közli a napi országos átlagot, és a kutak árai is addigra frissülnek
+- Az oldal szövegei, a README, a CLAUDE.md és az `ops/scheduled-task-prompt.md` az új időponthoz igazítva
+### Fixed
+- A 2026-11-12-i rekord kézi újrafuttatással javítva: az országos átlag 601,5 helyett 597,6 Ft (a 7:03-as futás még a tegnapi értéket hozta); a három kút ára a petromap szerint ma is változatlan
+
 ## v0.3.6 - 2026-11-12
 ### Added
 - `.github/workflows/tag-release.yml`: merge után automatikusan létrehozza a `vX.Y.Z` taget a `VERSION` alapján (ha még nincs)

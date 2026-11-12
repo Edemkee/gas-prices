@@ -135,7 +135,7 @@
 <div class="wrap">
   <header>
     <h1>Benzinárak a környéken</h1>
-    <p>OMV Soroksár · AVIA Kőbánya · M.Petrol (az elefántos) · Dallas Kőbánya — minden reggel 7:30-kor frissül</p>
+    <p>OMV Soroksár · AVIA Kőbánya · M.Petrol (az elefántos) · Dallas Kőbánya — minden nap 10:20-kor frissül</p>
     <div class="meta" id="meta">Adatok betöltése…</div>
   </header>
 
@@ -157,7 +157,7 @@
   <div class="notes">
     <strong>Források és megjegyzések</strong>
     <ul>
-      <li>Az árakat minden reggel egy automatikus feladat gyűjti nyilvános ár-összehasonlító oldalakról (pl. <a href="https://petromap.eu/hu/station/omv-budapest-9e4502">petromap.eu</a>, <a href="https://holtankoljak.hu/">holtankoljak.hu</a>, fuelo.net). Minden kártyán látszik, honnan jött az adott ár.</li>
+      <li>Az árakat minden nap 10:20-kor egy automatikus feladat gyűjti nyilvános ár-összehasonlító oldalakról (pl. <a href="https://petromap.eu/hu/station/omv-budapest-9e4502">petromap.eu</a>, <a href="https://holtankoljak.hu/">holtankoljak.hu</a>, fuelo.net). Minden kártyán látszik, honnan jött az adott ár.</li>
       <li>Ha egy kúthoz aznap nem volt friss ár, a legutóbbi ismert ár látszik egy <span class="bang">!</span> jellel, mellette a dátummal, amikor utoljára frissült. „Nincs adat” csak akkor szerepel, ha a kúthoz még egyáltalán nem volt ár.</li>
       <li>Az országos átlag a holtankoljak.hu napi közléséből van, viszonyítási alapnak.</li>
       <li>Csak városi kutakat figyelünk, autópályás árakat nem.</li>
@@ -166,7 +166,7 @@
     </ul>
   </div>
   <div class="status" id="status"></div>
-  <div class="status">v0.3.6</div>
+  <div class="status">v0.4.0</div>
 </div>
 
 <script>
@@ -280,7 +280,7 @@
     const visible = SERIES.filter(s => !state.hidden.has(s.key));
     const vals = [];
     days.forEach(d => visible.forEach(s => { const v = valueOf(d, s.key, state.fuel); if (v != null) vals.push(v); }));
-    if (!days.length) { host.innerHTML = `<div class="empty">Még nincs mentett adat. Az első adatsor a következő reggeli frissítéssel érkezik.</div>`; return; }
+    if (!days.length) { host.innerHTML = `<div class="empty">Még nincs mentett adat. Az első adatsor a következő napi frissítéssel (10:20) érkezik.</div>`; return; }
     if (!visible.length) { host.innerHTML = `<div class="empty">Minden kút ki van kapcsolva – kattints egy kútra fent.</div>`; return; }
     if (!vals.length) { host.innerHTML = `<div class="empty">Ehhez az üzemanyag-fajtához még nincs adat a kiválasztott kutaknál.</div>`; return; }
 

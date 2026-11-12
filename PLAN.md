@@ -7,7 +7,7 @@
 | 1 | Négy kút beazonosítása, források felkutatása | done | v0.1.0 |
 | 2 | Weboldal: mai árkártyák, fajtaválasztó, 30 napos diagram kikapcsolható kutakkal, táblázat, sötét mód | done | v0.1.0 |
 | 3 | Perzisztencia: artifact adatbázis, `prices/YYYY-MM-DD`, csak a tulajdonos írhatja | done | v0.1.0 |
-| 4 | Napi ütemezett frissítés 7:03-kor | done | v0.1.0; utasítás: `ops/scheduled-task-prompt.md` |
+| 4 | Napi ütemezett frissítés | done | v0.1.0 (7:03); v0.4.0-tól 10:20 CET; utasítás: `ops/scheduled-task-prompt.md` |
 | 5 | AVIA csere: Vecsés → Keresztúri út 108/a | done | v0.2.0 |
 | 6 | Autópályás árak kizárása | done | v0.2.0, a felhasználó irányelve |
 | 7 | Legutóbbi ismert ár „!” jellel, mind a négy kútra | done | v0.3.0 |
@@ -16,9 +16,9 @@
 | 10 | Nagybetűs dokumentumnevek (PLAN.md stb.), átnézés a frissített skill szerint | done | v0.3.1, v0.3.2 |
 | 11 | GitHub repo összekapcsolása, push | done | v0.3.3; `Edemkee/gas-prices`, a `main` fent van |
 | 25 | Tagek feltöltése (`v0.3.0`–`v0.3.5`) a felhasználó gépéről | done | 2026-11-12, a felhasználó feltöltötte |
-| 26 | Automatikus tagelés merge után (GitHub Actions, `VERSION` alapján) | in progress | v0.3.6 |
+| 26 | Automatikus tagelés merge után (GitHub Actions, `VERSION` alapján) | done | v0.3.6; a `v0.3.6` tag automatikusan elkészült |
 | 12 | GitHub secret scanning és push protection bekapcsolása | done | 2026-11-12, a felhasználó bekapcsolta (Secret Protection + push protection) |
-| 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | open | |
+| 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | in progress | nov. 12.: a 7:03-as futás túl korai volt (nem mai átlag, tegnapi kútárak) → 10:20-ra téve (v0.4.0), a mai rekord kézi újrafuttatással javítva (átlag 597,6 Ft; a kútárak a petromap szerint változatlanok) |
 | 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
 | 15 | Napi JSON-export a repóba (`data/YYYY-MM-DD.json`) biztonsági mentésként | open | a 11. után |
 | 16 | Figyelmeztetés az oldalon, ha a legutóbbi frissítés több napos | open | |
@@ -33,7 +33,7 @@
 
 ## Megjegyzés a 17. tételhez (Netlify)
 
-- **Időzítés:** a Scheduled Function UTC szerinti cronnal fut, így óraátállításkor a 7:03-as budapesti időt kezelni kell. Egy futás legfeljebb 30 másodpercig tarthat, és csak az éles deployon fut.
+- **Időzítés:** a Scheduled Function UTC szerinti cronnal fut, így óraátállításkor a 10:20-as helyi időt kezelni kell. Egy futás legfeljebb 30 másodpercig tarthat, és csak az éles deployon fut.
 - **Tárolás:** Netlify Blobs; a mostani artifact-adatbázisból egyszer át kell menteni az adatokat.
 - **Különbség:** fix kód olvasná ki a petromap „Benzin ma X Ft” szövegét. Ez gyors és olcsó, de ha az oldal megváltozik, csendben elromlik. A Claude-os feladat meghagyható ellenőrzőnek.
 - **Előtte:** a petromap felhasználási feltételeit el kell olvasni (van fizetős, jóváhagyáshoz kötött fejlesztői API-juk).
