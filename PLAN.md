@@ -13,23 +13,23 @@
 | 7 | Legutóbbi ismert ár „!” jellel, mind a négy kútra | done | v0.3.0 |
 | 8 | Dev-workflow struktúra: README, VERSION, CHANGELOG, .gitignore, `src/`, `ops/`, `tests/` | done | v0.3.0 |
 | 9 | Smoke teszt headless Chrome-mal | done | v0.3.0, `tests/smoke_test.py` |
-| 24 | A tervfájl neve `PLAN.md` (nagybetűvel) | done | v0.3.1 |
-| 10 | GitHub repo összekapcsolása, push, tagek (`v0.3.0`, `v0.3.1`) | open | a felhasználó otthon, a saját gépéről köti össze; a helyi repo és az első commit kész |
-| 11 | GitHub secret scanning és push protection bekapcsolása | open | a repo beállításaiban, a 10. után |
-| 12 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | open | |
-| 13 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
-| 14 | Napi JSON-export a repóba (`data/YYYY-MM-DD.json`) biztonsági mentésként | open | a 10. után |
-| 15 | Figyelmeztetés az oldalon, ha a legutóbbi frissítés több napos | open | |
-| 16 | Átköltözés Netlify-ra: oldal + Scheduled Function + Netlify Blobs | open | opció; lásd a megjegyzést lent |
-| 17 | CI: GitHub Actions a smoke teszttel minden PR-en | open | kis projekt, opcionális; a 10. után |
-| 18 | Gázolaj fül | open | ötlet |
-| 19 | A legolcsóbb kút kiemelése a kártyák között | open | ötlet |
-| 20 | Heti vagy havi átlag a táblázat alján | open | ötlet |
-| 21 | Vecsési AVIA (Üllői út 812.) | rejected | nincs hozzá friss ár; a 5. váltotta |
-| 22 | 30 napos visszamenőleges feltöltés | rejected | kutankénti árelőzmény nyilvánosan nem elérhető; kitalált adatot nem írunk |
-| 23 | fuelo.net becsült értékei forrásként | rejected | ugyanaz a szám több kútnál, jóval az átlag fölött (656,2 Ft vs. 602 Ft) |
+| 10 | Nagybetűs dokumentumnevek (PLAN.md stb.), átnézés a frissített skill szerint | done | v0.3.1, v0.3.2 |
+| 11 | GitHub repo összekapcsolása, push, tagek (`v0.3.0`–`v0.3.2`) | in progress | a helyi repo, a commitok és a tagek készen állnak |
+| 12 | GitHub secret scanning és push protection bekapcsolása | open | a repo beállításaiban, a 11. után |
+| 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | open | |
+| 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
+| 15 | Napi JSON-export a repóba (`data/YYYY-MM-DD.json`) biztonsági mentésként | open | a 11. után |
+| 16 | Figyelmeztetés az oldalon, ha a legutóbbi frissítés több napos | open | |
+| 17 | Átköltözés Netlify-ra: oldal + Scheduled Function + Netlify Blobs | open | opció; lásd a megjegyzést lent |
+| 18 | CI: GitHub Actions a smoke teszttel minden PR-en | open | kis projekt, opcionális; a 11. után |
+| 19 | Gázolaj fül | open | ötlet |
+| 20 | A legolcsóbb kút kiemelése a kártyák között | open | ötlet |
+| 21 | Heti vagy havi átlag a táblázat alján | open | ötlet |
+| 22 | Vecsési AVIA (Üllői út 812.) | rejected | nincs hozzá friss ár; az 5. váltotta |
+| 23 | 30 napos visszamenőleges feltöltés | rejected | kutankénti árelőzmény nyilvánosan nem elérhető; kitalált adatot nem írunk |
+| 24 | fuelo.net becsült értékei forrásként | rejected | ugyanaz a szám több kútnál, jóval az átlag fölött (656,2 Ft vs. 602 Ft) |
 
-## Megjegyzés a 16. tételhez (Netlify)
+## Megjegyzés a 17. tételhez (Netlify)
 
 - **Időzítés:** a Scheduled Function UTC szerinti cronnal fut, így óraátállításkor a 7:03-as budapesti időt kezelni kell. Egy futás legfeljebb 30 másodpercig tarthat, és csak az éles deployon fut.
 - **Tárolás:** Netlify Blobs; a mostani artifact-adatbázisból egyszer át kell menteni az adatokat.

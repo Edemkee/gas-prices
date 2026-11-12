@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.2 - 2026-11-12
+### Changed
+- Átnézés a frissített dev-workflow skill szerint: nagybetűs dokumentumnevek a CLAUDE.md-ben is, a PLAN.md számozása és állapotai rendbe téve (a GitHub-integráció `in progress`)
+
 ## v0.3.1 - 2026-11-12
 ### Changed
 - `plan.md` átnevezve `PLAN.md`-re; a hivatkozások frissítve (README, CLAUDE.md)

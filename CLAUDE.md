@@ -4,7 +4,7 @@ A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el
 
 ## A projekt röviden
 
-- **Méret:** kis projekt. A features.md, az architecture.md és a CI opcionális; akkor ajánljuk fel, amikor a projekt nő (pl. Netlify-backend).
+- **Méret:** kis projekt. A FEATURES.md, az ARCHITECTURE.md és a CI opcionális; akkor ajánljuk fel, amikor a projekt nő (pl. Netlify-backend).
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, a diagram kézzel írt SVG. claude.ai artifactként fut: slug `82aa5e36-0b9b-41e0-9bfb-6415d1f198d6`, https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
 - **Napi frissítés:** ütemezett feladat `trig_01DvQepk78PsfNFpNJxJjt8F`, minden nap 7:03 (Europe/Budapest). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
 - **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
@@ -41,11 +41,11 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 
 ## Döntések (legújabb felül)
 
-- **2026-11-12 – A tervfájl neve `PLAN.md` (nagybetűvel),** a dev-workflow skillben is. *Indok:* a felhasználó kérése.
+- **2026-11-12 – Minden dokumentum neve nagybetűs** (README.md, CLAUDE.md, PLAN.md, CHANGELOG.md, és ha lesznek: FEATURES.md, ARCHITECTURE.md), a dev-workflow skillben is. *Indok:* a felhasználó kérése.
 - **2026-11-12 – Amíg nincs GitHub-remote, a változás helyi branchen készül, és fast-forwarddal kerül a `main`-re, utána jön a tag.** Amint megvan a remote, a változások PR-on keresztül mennek. *Indok:* PR remote nélkül nem nyitható; a lépések sorrendje így is a skillt követi.
 
 - **2026-11-12 – A dev-workflow skill bevezetése.** A korábbi v0.1–v0.3 a skill szerint 0.1.0–0.3.0. A minor léptetés szabálya változatlan (0.9 után 0.10); új a PATCH szám az apró javításokra. *Indok:* a felhasználó kérte; a két szabály összefér.
-- **2026-11-12 – Projektméret: kis projekt.** Kötelező: README, .gitignore, VERSION, PLAN.md, CLAUDE.md, CHANGELOG.md. A features.md, az architecture.md és a CI később jön, ha a projekt nő. *Indok:* egyetlen HTML-oldal és egy ütemezett feladat.
+- **2026-11-12 – Projektméret: kis projekt.** Kötelező: README, .gitignore, VERSION, PLAN.md, CLAUDE.md, CHANGELOG.md. A FEATURES.md, az ARCHITECTURE.md és a CI később jön, ha a projekt nő. *Indok:* egyetlen HTML-oldal és egy ütemezett feladat.
 - **2026-11-12 – Könyvtárszerkezet:** `src/` (oldal), `ops/` (ütemezett feladat utasítása), `tests/` (smoke teszt). *Indok:* a skill GitHub-kész struktúrát kér.
 - **2026-11-12 – Helyi git repo, első commit a v0.3.0 állapota, tag `v0.3.0`.** A v0.1.0 és v0.2.0 csak a CHANGELOG-ban szerepel. *Indok:* ezek git nélkül készültek; utólag kitalált commitokat nem gyártunk.
 - **2026-11-11 – A Netlify-átköltözés opció marad (plan 16.), nem döntés.** *Indok:* előbb a GitHub-kapcsolat kell, és a petromap felhasználási feltételeit is meg kell nézni.
