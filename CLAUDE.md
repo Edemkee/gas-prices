@@ -7,7 +7,7 @@ A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el
 - **Méret:** kis projekt. A FEATURES.md, az ARCHITECTURE.md és a CI opcionális; akkor ajánljuk fel, amikor a projekt nő (pl. Netlify-backend).
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, a diagram kézzel írt SVG. claude.ai artifactként fut: slug `82aa5e36-0b9b-41e0-9bfb-6415d1f198d6`, https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
 - **Tagelés:** `.github/workflows/tag-release.yml` – merge után a `VERSION` alapján.
-- **Napi frissítés:** ütemezett feladat `trig_01DvQepk78PsfNFpNJxJjt8F`, minden nap 7:03 (Europe/Budapest). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
+- **Napi frissítés:** ütemezett feladat `trig_01DvQepk78PsfNFpNJxJjt8F`, minden nap 10:20 (CET, `CRON_TZ=CET`). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
 - **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
 
 ## Adatmodell
@@ -42,6 +42,7 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 
 ## Döntések (legújabb felül)
 
+- **2026-11-12 – A napi frissítés 10:20-kor fut, CET időzónában** (`CRON_TZ=CET 20 10 * * *`). *Indok:* a 7:03-as első futás nem mai adatot hozott: a holtankoljak hétköznap 10 óráig teszi közzé a napi országos átlagot (2026-11-12-én 08:43-kor jelent meg), és a kutak árai is a tegnapiak voltak. A felhasználó a két lehetőség (7:03 + 10:20, vagy csak 10:20) közül a csak 10:20-at választotta, és a CET időzónát kérte. A `CET` IANA-zóna ugyanúgy vált nyári időre (CEST), mint az `Europe/Budapest`, így a futás egész évben helyi idő szerint 10:20-kor indul.
 - **2026-11-12 – Tagelés automatikusan, GitHub Actions-szel** (`.github/workflows/tag-release.yml`). Minden `main`-re kerülő push (merge) után a workflow kiolvassa a `VERSION`-t, és ha még nincs `vX.Y.Z` tag, létrehozza és feltölti. Kézzel is indítható (Actions → Tag release → Run workflow). *Indok:* a Claude-munkamenetből a tag létrehozása minden úton tiltott (git push, REST `git/refs` és `git/tags`, release-ek: 403); a workflow a GitHub saját jogosultságával fut, így a tagelés nem a felhasználóra marad.
 - **2026-11-12 – A repó nyilvános, ezért bele csak olyan kerülhet, ami bárki szeme elé kerülhet.** Az artifact-link és az ütemezett feladat azonosítója rendben van (mindkettő csak a tulajdonosnak nyílik meg); e-mail-cím, token vagy személyes adat nem kerülhet be. *Indok:* a repó nyilvános láthatósággal jött létre.
 - **2026-11-12 – A commitokba és a PR-leírásba nem kerül Claude session-link** (`Claude-Session: …`, `https://claude.ai/code/session_…`). A `Co-Authored-By: Claude …` sor marad. *Indok:* a felhasználó kérése; a dev-workflow skillben is.
@@ -64,7 +65,7 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 - **2026-11-11 – Irányelv: autópályás árak egyik láncból sem kellenek.** Csak városi kutak; a napi feladat autópályás kút árát akkor sem veheti fel, ha ugyanabból a láncból van. *Indok:* a felhasználó kifejezett kérése.
 - **2026-11-11 – Nincs visszamenőleges 30 napos feltöltés.** *Indok:* kutankénti árelőzmény nyilvánosan nem elérhető (a petromapon regisztráció kell hozzá); kitalált adatot nem írunk.
 - **2026-11-11 – A diagram x-tengelye mindig az utolsó 30 nap; hiányzó napnál megszakad a vonal.** *Indok:* hiányzó nap fölötti összekötés nem létező adatot sugallna.
-- **2026-11-11 – A frissítés 7:03-kor fut, nem pontosan 7:30-kor.** *Indok:* így 7:30-ra biztosan kész; a kerek időpontokban torlódhat az ütemező.
+- ~~**2026-11-11 – A frissítés 7:03-kor fut, nem pontosan 7:30-kor.**~~ Felváltotta a 10:20-as futás (2026-11-12). *Indok:* így 7:30-ra biztosan kész; a kerek időpontokban torlódhat az ütemező.
 - **2026-11-11 – Az M.Petrol Citroën utcai kút a petromapon „M.Petrol Budapest 2”** (koordináta 47.4368, 19.1438). *Indok:* a petromap nem írja ki az utcanevet; a koordináta alapján azonosítottuk.
 - **2026-11-11 – Elsődleges forrás a petromap.eu** (a kút oldalán a „Benzin ma X Ft”), az országos átlagé a holtankoljak.hu. *Indok:* csak a petromap ad kutanként mai jelölésű árat, ami gépileg olvasható; a holtankoljak kútoldalai JavaScripttel töltődnek.
 - **2026-11-11 – Írási jog csak a tulajdonosé, olvasás mindenkié, aki látja az oldalt.** *Indok:* a napi feladat a tulajdonos nevében ír; a nézők ne tudják átírni az árakat.
