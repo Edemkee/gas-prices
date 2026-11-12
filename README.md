@@ -10,6 +10,7 @@ Repó: https://github.com/Edemkee/gas-prices
 
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, külső könyvtár nélkül. Jelenleg claude.ai artifactként fut: https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
 - **Adatok:** az artifact saját adatbázisában, napi egy rekorddal (`prices/YYYY-MM-DD`). Az adatmodell leírása a `CLAUDE.md`-ben van.
+- **Előnézet és élesítés:** a PR változata egy külön előnézeti artifacton látszik (`ops/make_preview.py`); merge után egy óránkénti ütemezett feladat teszi ki az élő oldalra (`ops/deploy-task-prompt.md`).
 - **Napi frissítés:** egy ütemezett Claude-feladat minden nap 10:20-kor (CET) összegyűjti az árakat, és beírja az adatbázisba. Az utasítása: `ops/scheduled-task-prompt.md`.
 - Ha egy kúthoz aznap nincs friss ár, az oldal a legutóbbi ismert árat mutatja, „!” jellel.
 

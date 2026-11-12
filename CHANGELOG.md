@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.0 - 2026-11-12
+### Added
+- PR-előnézet: külön artifact „ELŐNÉZET” sávval, az élő adatok másolatával (`ops/make_preview.py`); a link a PR-leírásban
+- Automatikus élesítés: óránkénti ütemezett feladat (7:40–21:40, CET) teszi ki a `main` változatát az élő oldalra, ha újabb (`ops/deploy-task-prompt.md`)
+### Changed
+- Az élő oldalra Claude kézzel már nem publikál; a CLAUDE.md és a README a folyamatot írja le
+
 ## v0.4.0 - 2026-11-12
 ### Changed
 - A napi frissítés 7:03 helyett 10:20-kor fut, CET időzónában: a holtankoljak hétköznap 10 óráig közli a napi országos átlagot, és a kutak árai is addigra frissülnek
