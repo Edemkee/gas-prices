@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.3 - 2026-11-12
+### Changed
+- A projekt a GitHubon: `Edemkee/gas-prices`; innentől minden változás PR-ral megy
+- CLAUDE.md: PR-link minden változásnál, a tagek feltöltése a felhasználó gépéről, a commitok szerzője
+
 ## v0.3.2 - 2026-11-12
 ### Changed
 - Átnézés a frissített dev-workflow skill szerint: nagybetűs dokumentumnevek a CLAUDE.md-ben is, a PLAN.md számozása és állapotai rendbe téve (a GitHub-integráció `in progress`)

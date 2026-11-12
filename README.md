@@ -4,6 +4,8 @@ Egy weboldal, amely négy budapesti benzinkút napi benzinárait és az országo
 
 Figyelt kutak: OMV (XXIII., Nagykőrösi út 349.), AVIA (X., Keresztúri út 108/a), M.Petrol (XIX., Citroën utca 2.), Dallas (X., Száva utca 5–7.), valamint az országos átlag (holtankoljak.hu).
 
+Repó: https://github.com/Edemkee/gas-prices
+
 ## Hogyan működik
 
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, külső könyvtár nélkül. Jelenleg claude.ai artifactként fut: https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
