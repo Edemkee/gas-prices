@@ -5,6 +5,7 @@
 - Futás: a felhőben, minden alkalommal új munkamenetben, automatikus jóváhagyással
 - Mit csinál: ha a GitHub `main` ágán újabb verzió van, mint az élő artifacton, kiteszi a `main` `src/index.html`-jét az élő artifactra. Ha nincs újabb verzió, azonnal leáll.
 - Ez a fájl a feladat utasításának verziókezelt másolata. Ha az utasítás változik, itt is frissíteni kell, ugyanabban a PR-ban.
+- Ha a feladat elveszik, ebből a fájlból kell újra létrehozni: a név, az ütemezés és az utasítás szó szerint. Az azonosítót az ütemező adja, ezért itt nem szerepel; az aktuális a `CLAUDE.md`-ben van.
 
 ## Utasítás (szó szerint)
 

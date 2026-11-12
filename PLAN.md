@@ -17,7 +17,8 @@
 | 11 | GitHub repo összekapcsolása, push | done | v0.3.3; `Edemkee/gas-prices`, a `main` fent van |
 | 25 | Tagek feltöltése (`v0.3.0`–`v0.3.5`) a felhasználó gépéről | done | 2026-11-12, a felhasználó feltöltötte |
 | 26 | Automatikus tagelés merge után (GitHub Actions, `VERSION` alapján) | done | v0.3.6; a `v0.3.6` tag automatikusan elkészült |
-| 27 | PR-előnézet külön artifacton + automatikus élesítés merge után (óránként 7:40–21:40) | in progress | v0.5.0 |
+| 27 | PR-előnézet külön artifacton + automatikus élesítés merge után (óránként 7:40–21:40) | done | v0.5.0; a `v0.5.0` tag automatikusan elkészült |
+| 28 | Ütemezett feladatok újralétrehozása törlés után, azonosítók frissítése | done | v0.5.1 |
 | 12 | GitHub secret scanning és push protection bekapcsolása | done | 2026-11-12, a felhasználó bekapcsolta (Secret Protection + push protection) |
 | 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | in progress | nov. 12.: a 7:03-as futás túl korai volt (nem mai átlag, tegnapi kútárak) → 10:20-ra téve (v0.4.0), a mai rekord kézi újrafuttatással javítva (átlag 597,6 Ft; a kútárak a petromap szerint változatlanok) |
 | 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
