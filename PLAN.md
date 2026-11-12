@@ -15,7 +15,8 @@
 | 9 | Smoke teszt headless Chrome-mal | done | v0.3.0, `tests/smoke_test.py` |
 | 10 | Nagybetűs dokumentumnevek (PLAN.md stb.), átnézés a frissített skill szerint | done | v0.3.1, v0.3.2 |
 | 11 | GitHub repo összekapcsolása, push | done | v0.3.3; `Edemkee/gas-prices`, a `main` fent van |
-| 25 | Tagek feltöltése (`v0.3.0`–`v0.3.3`) a felhasználó gépéről | done | 2026-11-12, a felhasználó feltöltötte |
+| 25 | Tagek feltöltése (`v0.3.0`–`v0.3.5`) a felhasználó gépéről | done | 2026-11-12, a felhasználó feltöltötte |
+| 26 | Automatikus tagelés merge után (GitHub Actions, `VERSION` alapján) | in progress | v0.3.6 |
 | 12 | GitHub secret scanning és push protection bekapcsolása | done | 2026-11-12, a felhasználó bekapcsolta (Secret Protection + push protection) |
 | 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | open | |
 | 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |

@@ -6,6 +6,7 @@ A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el
 
 - **Méret:** kis projekt. A FEATURES.md, az ARCHITECTURE.md és a CI opcionális; akkor ajánljuk fel, amikor a projekt nő (pl. Netlify-backend).
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, a diagram kézzel írt SVG. claude.ai artifactként fut: slug `82aa5e36-0b9b-41e0-9bfb-6415d1f198d6`, https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
+- **Tagelés:** `.github/workflows/tag-release.yml` – merge után a `VERSION` alapján.
 - **Napi frissítés:** ütemezett feladat `trig_01DvQepk78PsfNFpNJxJjt8F`, minden nap 7:03 (Europe/Budapest). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
 - **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
 
@@ -32,7 +33,7 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 ## Munkaszabályok
 
 - **Verziózás (dev-workflow):** `MAJOR.MINOR.PATCH`, PR-onként egy emelés. Funkció vagy érdemi változás: MINOR +1, PATCH nullázva; 0.9.x után **0.10.0** jön, nem 1.0.0. Apró javítás: PATCH +1. MAJOR csak a felhasználó kifejezett kérésére.
-- Minden változás külön branchen és PR-ban megy (`feature/...`, `fix/...`, `docs/...`) az `Edemkee/gas-prices` repóban; a merge a felhasználóé. Merge után tag a `main`-en (`vX.Y.Z`) – ezt a felhasználó tölti fel, lásd lent. A válaszban mindig benne van a PR linkje.
+- Minden változás külön branchen és PR-ban megy (`feature/...`, `fix/...`, `docs/...`) az `Edemkee/gas-prices` repóban; a merge a felhasználóé. Merge után a `main`-en a tag (`vX.Y.Z`) automatikusan elkészül (`tag-release` workflow); Claude a következő munkamenetben ellenőrzi, hogy megvan-e. A válaszban mindig benne van a PR linkje.
 - A változás előtt fusson a `tests/smoke_test.py`, és csak akkor commitolunk, ha átment.
 - Commit előtt a staged diffet át kell nézni titkos adatra (kulcs, token, jelszó, személyes adat).
 - Az oldal módosítása: `src/index.html` szerkesztése, smoke teszt, aztán újrapublikálás az artifactra (`publish_files`, `mode: patch`, `as: index.html`).
@@ -41,11 +42,12 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 
 ## Döntések (legújabb felül)
 
+- **2026-11-12 – Tagelés automatikusan, GitHub Actions-szel** (`.github/workflows/tag-release.yml`). Minden `main`-re kerülő push (merge) után a workflow kiolvassa a `VERSION`-t, és ha még nincs `vX.Y.Z` tag, létrehozza és feltölti. Kézzel is indítható (Actions → Tag release → Run workflow). *Indok:* a Claude-munkamenetből a tag létrehozása minden úton tiltott (git push, REST `git/refs` és `git/tags`, release-ek: 403); a workflow a GitHub saját jogosultságával fut, így a tagelés nem a felhasználóra marad.
 - **2026-11-12 – A repó nyilvános, ezért bele csak olyan kerülhet, ami bárki szeme elé kerülhet.** Az artifact-link és az ütemezett feladat azonosítója rendben van (mindkettő csak a tulajdonosnak nyílik meg); e-mail-cím, token vagy személyes adat nem kerülhet be. *Indok:* a repó nyilvános láthatósággal jött létre.
 - **2026-11-12 – A commitokba és a PR-leírásba nem kerül Claude session-link** (`Claude-Session: …`, `https://claude.ai/code/session_…`). A `Co-Authored-By: Claude …` sor marad. *Indok:* a felhasználó kérése; a dev-workflow skillben is.
 - **2026-11-12 – A PR-t Claude nyitja meg a GitHub REST API-n keresztül** (`gh api repos/Edemkee/gas-prices/pulls`). A GraphQL (`gh pr …`) a munkamenetből tiltott, a REST működik. *Indok:* így a PR-link azonnal a válaszba kerülhet.
 - **2026-11-12 – A repóban be van kapcsolva a Secret Protection és a push protection.** *Indok:* dev-workflow, 7. fejezet.
-- **2026-11-12 – A tageket a felhasználó tölti fel a saját gépéről** (`git fetch origin && git push origin --tags`, vagy a merge után `git tag -a vX.Y.Z -m vX.Y.Z origin/main && git push origin vX.Y.Z`). Claude a PR leírásában megadja, melyik taget kell létrehozni. *Indok:* a Claude-munkamenet hálózati szabályai a tag pusht 403-mal elutasítják; a branch push és a PR működik.
+- ~~2026-11-12 – A tageket a felhasználó tölti fel a saját gépéről.~~ Felváltotta az automatikus tagelés (lásd fent).
 - **2026-11-12 – Minden változásról szóló válaszban benne van az új PR linkje** (dev-workflow, 2. fejezet). *Indok:* a felhasználó közvetlenül onnan nézi át és olvasztja be.
 - **2026-11-12 – A repó: `Edemkee/gas-prices` (**nyilvános**), alapág: `main`.** A commitok szerzője `Edemkee <Edemkee@users.noreply.github.com>`, a Claude társszerző. *Indok:* a felhasználó választása; a noreply cím nem fedi fel a valódi e-mail-címet.
 - ~~2026-11-12 – Amíg nincs GitHub-remote, a változás helyi branchen készül, és fast-forwarddal kerül a `main`-re.~~ Lezárva: a v0.3.3-tól minden változás PR-ral megy.
