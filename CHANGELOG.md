@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.3.4 - 2026-11-12
+### Changed
+- CLAUDE.md: a repó nyilvános (eddig tévesen privátnak szerepelt); a PR-t Claude nyitja meg a felhasználó böngészőjében; a secret scanning és a push protection be van kapcsolva
+- PLAN.md: a secret scanning és a tagek feltöltése kész
+
 ## v0.3.3 - 2026-11-12
 ### Changed
 - A projekt a GitHubon: `Edemkee/gas-prices`; innentől minden változás PR-ral megy
