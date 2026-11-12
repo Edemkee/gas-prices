@@ -41,9 +41,12 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 
 ## Döntések (legújabb felül)
 
+- **2026-11-12 – A repó nyilvános, ezért bele csak olyan kerülhet, ami bárki szeme elé kerülhet.** Az artifact-link és az ütemezett feladat azonosítója rendben van (mindkettő csak a tulajdonosnak nyílik meg); e-mail-cím, token vagy személyes adat nem kerülhet be. *Indok:* a repó nyilvános láthatósággal jött létre.
+- **2026-11-12 – A PR-t Claude nyitja meg a felhasználó beépített böngészőjében** (a felhasználó GitHub-bejelentkezésével), és a beküldés előtt mindig rákérdez. *Indok:* a munkamenet GitHub CLI-je nincs bejelentkezve; a felhasználó így kérte.
+- **2026-11-12 – A repóban be van kapcsolva a Secret Protection és a push protection.** *Indok:* dev-workflow, 7. fejezet.
 - **2026-11-12 – A tageket a felhasználó tölti fel a saját gépéről** (`git fetch origin && git push origin --tags`, vagy a merge után `git tag -a vX.Y.Z -m vX.Y.Z origin/main && git push origin vX.Y.Z`). Claude a PR leírásában megadja, melyik taget kell létrehozni. *Indok:* a Claude-munkamenet hálózati szabályai a tag pusht 403-mal elutasítják; a branch push és a PR működik.
 - **2026-11-12 – Minden változásról szóló válaszban benne van az új PR linkje** (dev-workflow, 2. fejezet). *Indok:* a felhasználó közvetlenül onnan nézi át és olvasztja be.
-- **2026-11-12 – A repó: `Edemkee/gas-prices` (privát), alapág: `main`.** A commitok szerzője `Edemkee <Edemkee@users.noreply.github.com>`, a Claude társszerző. *Indok:* a felhasználó választása; a noreply cím nem fedi fel a valódi e-mail-címet.
+- **2026-11-12 – A repó: `Edemkee/gas-prices` (**nyilvános**), alapág: `main`.** A commitok szerzője `Edemkee <Edemkee@users.noreply.github.com>`, a Claude társszerző. *Indok:* a felhasználó választása; a noreply cím nem fedi fel a valódi e-mail-címet.
 - ~~2026-11-12 – Amíg nincs GitHub-remote, a változás helyi branchen készül, és fast-forwarddal kerül a `main`-re.~~ Lezárva: a v0.3.3-tól minden változás PR-ral megy.
 - **2026-11-12 – Minden dokumentum neve nagybetűs** (README.md, CLAUDE.md, PLAN.md, CHANGELOG.md, és ha lesznek: FEATURES.md, ARCHITECTURE.md), a dev-workflow skillben is. *Indok:* a felhasználó kérése.
 - **2026-11-12 – A dev-workflow skill bevezetése.** A korábbi v0.1–v0.3 a skill szerint 0.1.0–0.3.0. A minor léptetés szabálya változatlan (0.9 után 0.10); új a PATCH szám az apró javításokra. *Indok:* a felhasználó kérte; a két szabály összefér.
