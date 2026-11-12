@@ -32,4 +32,4 @@ A teszt kitalált mintaadattal, világos és sötét módban, asztali és mobil 
 - `PLAN.md` – teendők, ötletek, állapotokkal
 - `CLAUDE.md` – döntések és munkaszabályok
 - `CHANGELOG.md` – verziónkénti változások
-- `VERSION` – aktuális verzió
+- `VERSION` – aktuális verzió; merge után a `tag-release` workflow ebből készíti el a `vX.Y.Z` taget

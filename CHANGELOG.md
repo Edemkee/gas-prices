@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.6 - 2026-11-12
+### Added
+- `.github/workflows/tag-release.yml`: merge után automatikusan létrehozza a `vX.Y.Z` taget a `VERSION` alapján (ha még nincs)
+### Changed
+- CLAUDE.md: a tagelés a workflow dolga, a felhasználónak már nem kell kézzel tagelnie
+
 ## v0.3.5 - 2026-11-12
 ### Changed
 - CLAUDE.md: a PR-t Claude a GitHub REST API-n keresztül nyitja meg (nem a böngészőből); a commitokba és a PR-leírásba nem kerül session-link

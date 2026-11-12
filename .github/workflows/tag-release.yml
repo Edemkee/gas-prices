@@ -1,0 +1,45 @@
+# Tags the default branch with the version in VERSION after every merge.
+# Claude sessions cannot push tags, so this replaces the manual tagging step
+# (dev-workflow, section 4). It only creates a tag that does not exist yet,
+# so a merge without a version bump does nothing.
+name: Tag release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tag-release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create the tag from VERSION if it does not exist
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::VERSION must be MAJOR.MINOR.PATCH, got '$version'"
+            exit 1
+          fi
+          tag="v$version"
+          git fetch --tags --force --quiet
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "Tag $tag already exists ($(git rev-list -n1 "$tag" | cut -c1-7)), nothing to do."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898248+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$tag" -m "$tag" "$GITHUB_SHA"
+          git push origin "refs/tags/$tag"
+          echo "Created $tag on ${GITHUB_SHA:0:7}."
