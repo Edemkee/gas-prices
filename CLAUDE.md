@@ -42,7 +42,8 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 ## Döntések (legújabb felül)
 
 - **2026-11-12 – A repó nyilvános, ezért bele csak olyan kerülhet, ami bárki szeme elé kerülhet.** Az artifact-link és az ütemezett feladat azonosítója rendben van (mindkettő csak a tulajdonosnak nyílik meg); e-mail-cím, token vagy személyes adat nem kerülhet be. *Indok:* a repó nyilvános láthatósággal jött létre.
-- **2026-11-12 – A PR-t Claude nyitja meg a felhasználó beépített böngészőjében** (a felhasználó GitHub-bejelentkezésével), és a beküldés előtt mindig rákérdez. *Indok:* a munkamenet GitHub CLI-je nincs bejelentkezve; a felhasználó így kérte.
+- **2026-11-12 – A commitokba és a PR-leírásba nem kerül Claude session-link** (`Claude-Session: …`, `https://claude.ai/code/session_…`). A `Co-Authored-By: Claude …` sor marad. *Indok:* a felhasználó kérése; a dev-workflow skillben is.
+- **2026-11-12 – A PR-t Claude nyitja meg a GitHub REST API-n keresztül** (`gh api repos/Edemkee/gas-prices/pulls`). A GraphQL (`gh pr …`) a munkamenetből tiltott, a REST működik. *Indok:* így a PR-link azonnal a válaszba kerülhet.
 - **2026-11-12 – A repóban be van kapcsolva a Secret Protection és a push protection.** *Indok:* dev-workflow, 7. fejezet.
 - **2026-11-12 – A tageket a felhasználó tölti fel a saját gépéről** (`git fetch origin && git push origin --tags`, vagy a merge után `git tag -a vX.Y.Z -m vX.Y.Z origin/main && git push origin vX.Y.Z`). Claude a PR leírásában megadja, melyik taget kell létrehozni. *Indok:* a Claude-munkamenet hálózati szabályai a tag pusht 403-mal elutasítják; a branch push és a PR működik.
 - **2026-11-12 – Minden változásról szóló válaszban benne van az új PR linkje** (dev-workflow, 2. fejezet). *Indok:* a felhasználó közvetlenül onnan nézi át és olvasztja be.

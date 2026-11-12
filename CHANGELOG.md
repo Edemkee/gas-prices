@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.5 - 2026-11-12
+### Changed
+- CLAUDE.md: a PR-t Claude a GitHub REST API-n keresztül nyitja meg (nem a böngészőből); a commitokba és a PR-leírásba nem kerül session-link
+
 ## v0.3.4 - 2026-11-12
 ### Changed
 - CLAUDE.md: a repó nyilvános (eddig tévesen privátnak szerepelt); a PR-t Claude nyitja meg a felhasználó böngészőjében; a secret scanning és a push protection be van kapcsolva
