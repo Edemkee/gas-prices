@@ -1,10 +1,10 @@
 # Napi frissítés – ütemezett feladat
 
 - Név: Benzinárak napi frissítése
-- Azonosító: `trig_01DvQepk78PsfNFpNJxJjt8F`
 - Ütemezés: `CRON_TZ=CET 20 10 * * *` (minden nap 10:20, CET; a holtankoljak hétköznap 10 óráig közli a napi országos átlagot)
 - Futás: a felhőben, minden alkalommal új munkamenetben, automatikus jóváhagyással
 - Ez a fájl a feladat utasításainak verziókezelt másolata. Ha az utasítás változik, itt is frissíteni kell, ugyanabban a PR-ban.
+- Ha a feladat elveszik, ebből a fájlból kell újra létrehozni: a név, az ütemezés és az utasítás szó szerint. Az azonosítót az ütemező adja, ezért itt nem szerepel; az aktuális a `CLAUDE.md`-ben van.
 
 ## Utasítás (szó szerint)
 

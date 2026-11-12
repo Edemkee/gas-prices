@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.5.1 - 2026-11-12
+### Fixed
+- A két ütemezett feladatot (napi frissítés, élesítés) törlés után újra kellett létrehozni az `ops/` alatti definíciókból; a CLAUDE.md az új azonosítókat tartalmazza
+### Changed
+- Az `ops/scheduled-task-prompt.md`-ből kikerült a feladat azonosítója; mindkét `ops/` fájl leírja, hogyan kell a feladatot újra létrehozni
+- CLAUDE.md: munkaszabály az elveszett ütemezett feladat újralétrehozásáról
+
 ## v0.5.0 - 2026-11-12
 ### Added
 - PR-előnézet: külön artifact „ELŐNÉZET” sávval, az élő adatok másolatával (`ops/make_preview.py`); a link a PR-leírásban
