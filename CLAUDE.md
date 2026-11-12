@@ -1,0 +1,62 @@
+# CLAUDE.md – projekt döntések és munkaszabályok
+
+A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el kell olvasni ezt a fájlt, a `plan.md`-t és a `CHANGELOG.md`-t, meg kell nézni a `VERSION`-t és a legutóbbi taget, aztán a `plan.md` aktuális vagy következő tételével kell folytatni.
+
+## A projekt röviden
+
+- **Méret:** kis projekt. A features.md, az architecture.md és a CI opcionális; akkor ajánljuk fel, amikor a projekt nő (pl. Netlify-backend).
+- **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, a diagram kézzel írt SVG. claude.ai artifactként fut: slug `82aa5e36-0b9b-41e0-9bfb-6415d1f198d6`, https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
+- **Napi frissítés:** ütemezett feladat `trig_01DvQepk78PsfNFpNJxJjt8F`, minden nap 7:03 (Europe/Budapest). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
+- **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
+
+## Adatmodell
+
+Kollekció: `prices`, dokumentumazonosító: `YYYY-MM-DD` (budapesti nap). Írni csak a tulajdonos tud (`write: owner`), olvasni mindenki, aki látja az oldalt (`read: view`).
+
+```json
+{
+  "date": "2026-11-11",
+  "updatedAt": "2026-11-11T19:47:00Z",
+  "national": { "b95": 602, "src": "holtankoljak.hu" },
+  "stations": {
+    "omv":     { "b95": 597, "b95p": null, "b100": null, "src": "petromap.eu" },
+    "avia":    { "b95": 595, "b95p": null, "b100": null, "src": "petromap.eu" },
+    "mpetrol": { "b95": 599, "b95p": null, "b100": null, "src": "petromap.eu" },
+    "dallas":  { "b95": null, "b95p": null, "b100": null, "src": null, "note": "nem volt friss ár" }
+  }
+}
+```
+
+Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, "asOf": "2026-11-08", "note": "nem friss ár" }`; ha nincs dátum, az `asOf` null. Ugyanarra a napra az újabb futás felülírja a rekordot (`set`, `ifVersion`-nel). Az oldal az utolsó 30 rekordot olvassa élőben. Kapacitás: 25 000 dokumentum.
+
+## Munkaszabályok
+
+- **Verziózás (dev-workflow):** `MAJOR.MINOR.PATCH`, PR-onként egy emelés. Funkció vagy érdemi változás: MINOR +1, PATCH nullázva; 0.9.x után **0.10.0** jön, nem 1.0.0. Apró javítás: PATCH +1. MAJOR csak a felhasználó kifejezett kérésére.
+- Minden változás külön branchen és PR-ban megy (`feature/...`, `fix/...`), a merge a felhasználóé; merge után tag a default branchen (`vX.Y.Z`).
+- A változás előtt fusson a `tests/smoke_test.py`, és csak akkor commitolunk, ha átment.
+- Commit előtt a staged diffet át kell nézni titkos adatra (kulcs, token, jelszó, személyes adat).
+- Az oldal módosítása: `src/index.html` szerkesztése, smoke teszt, aztán újrapublikálás az artifactra (`publish_files`, `mode: patch`, `as: index.html`).
+- Ha a napi feladat utasítása változik: a feladatot is frissíteni kell (`update_trigger`), és az `ops/scheduled-task-prompt.md`-t is, ugyanabban a PR-ban.
+- Az adatbázisba kitalált vagy mintaadat soha nem kerül. A teszt csak mockolt adatbázissal dolgozik.
+
+## Döntések (legújabb felül)
+
+- **2026-11-12 – A dev-workflow skill bevezetése.** A korábbi v0.1–v0.3 a skill szerint 0.1.0–0.3.0. A minor léptetés szabálya változatlan (0.9 után 0.10); új a PATCH szám az apró javításokra. *Indok:* a felhasználó kérte; a két szabály összefér.
+- **2026-11-12 – Projektméret: kis projekt.** Kötelező: README, .gitignore, VERSION, plan.md, CLAUDE.md, CHANGELOG.md. A features.md, az architecture.md és a CI később jön, ha a projekt nő. *Indok:* egyetlen HTML-oldal és egy ütemezett feladat.
+- **2026-11-12 – Könyvtárszerkezet:** `src/` (oldal), `ops/` (ütemezett feladat utasítása), `tests/` (smoke teszt). *Indok:* a skill GitHub-kész struktúrát kér.
+- **2026-11-12 – Helyi git repo, első commit a v0.3.0 állapota, tag `v0.3.0`.** A v0.1.0 és v0.2.0 csak a CHANGELOG-ban szerepel. *Indok:* ezek git nélkül készültek; utólag kitalált commitokat nem gyártunk.
+- **2026-11-11 – A Netlify-átköltözés opció marad (plan 16.), nem döntés.** *Indok:* előbb a GitHub-kapcsolat kell, és a petromap felhasználási feltételeit is meg kell nézni.
+- **2026-11-11 – Nem friss ár kétféleképpen jöhet létre:** (1) az oldal viszi tovább az előző napok rekordjából, a rekordban null marad, nem másolunk; (2) a napi feladat egy régebbi vagy dátum nélküli árat `stale: true` és `asOf` mezővel ír be, de csak akkor, ha legfeljebb 5%-kal tér el az országos átlagtól. *Indok:* a rekordból mindig látszik, mi volt valóban aznapi; a fuelo.net becsült értékeit (pl. 656,2 Ft ugyanazzal a számmal két kútnál, a 602 Ft-os átlag mellett) a korlát kiszűri.
+- **2026-11-11 – Legutóbbi ismert ár „!” jellel, mind a négy kútra.** A diagramon a vonal csak a friss árakon fut át; a nem friss nap üres karika. Ez felülírja a korábbi „inkább nincs adat, mint régi ár” szabályt. *Indok:* a felhasználó kérése.
+- **2026-11-11 – A GitHub-integráció teendő marad;** a felhasználó otthon, a saját gépéről köti össze. *Indok:* a felhasználó döntése.
+- **2026-11-11 – AVIA: a Keresztúri út 108/a (X. ker.) a vecsési Üllői út 812. helyett.** Forrás: https://petromap.eu/hu/station/avia-budapest-f1b709. *Indok:* a vecsésihez nem volt friss ár; a Keresztúri úti városi kút „ma” jelölésű árral, és a két budapesti AVIA közül ez van közelebb (a másik a Vágóhíd utcai).
+- **2026-11-11 – Irányelv: autópályás árak egyik láncból sem kellenek.** Csak városi kutak; a napi feladat autópályás kút árát akkor sem veheti fel, ha ugyanabból a láncból van. *Indok:* a felhasználó kifejezett kérése.
+- **2026-11-11 – Nincs visszamenőleges 30 napos feltöltés.** *Indok:* kutankénti árelőzmény nyilvánosan nem elérhető (a petromapon regisztráció kell hozzá); kitalált adatot nem írunk.
+- **2026-11-11 – A diagram x-tengelye mindig az utolsó 30 nap; hiányzó napnál megszakad a vonal.** *Indok:* hiányzó nap fölötti összekötés nem létező adatot sugallna.
+- **2026-11-11 – A frissítés 7:03-kor fut, nem pontosan 7:30-kor.** *Indok:* így 7:30-ra biztosan kész; a kerek időpontokban torlódhat az ütemező.
+- **2026-11-11 – Az M.Petrol Citroën utcai kút a petromapon „M.Petrol Budapest 2”** (koordináta 47.4368, 19.1438). *Indok:* a petromap nem írja ki az utcanevet; a koordináta alapján azonosítottuk.
+- **2026-11-11 – Elsődleges forrás a petromap.eu** (a kút oldalán a „Benzin ma X Ft”), az országos átlagé a holtankoljak.hu. *Indok:* csak a petromap ad kutanként mai jelölésű árat, ami gépileg olvasható; a holtankoljak kútoldalai JavaScripttel töltődnek.
+- **2026-11-11 – Írási jog csak a tulajdonosé, olvasás mindenkié, aki látja az oldalt.** *Indok:* a napi feladat a tulajdonos nevében ír; a nézők ne tudják átírni az árakat.
+- **2026-11-11 – Perzisztencia: az artifact saját adatbázisa,** napi egy dokumentum. *Indok:* az oldal közvetlenül olvassa, nincs szükség külső szerverre.
+- **2026-11-11 – Üzemanyag: elsősorban a 95-ös benzin;** a prémium 95 és a 100-as opcionális mező. *Indok:* „benzin főleg, de mindegyik fajta”, később „a 95-ös elég”.
+- **2026-11-11 – Figyelt kutak:** OMV Nagykőrösi út 349. (XXIII.), AVIA (lásd fent), M.Petrol Citroën utca 2. (XIX.), Dallas Száva utca 5–7. (X.). *Indok:* a felhasználó választása.

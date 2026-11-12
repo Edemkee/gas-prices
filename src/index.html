@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benzinárak – XVIII–XIX. kerület környéke</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-0: #f4f3ef;
+    --surface-1: #fcfcfb;
+    --border: #e3e1da;
+    --grid: #ebe9e3;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #7a7974;
+    --s-omv: #2a78d6;
+    --s-avia: #eb6834;
+    --s-mpetrol: #1baf7a;
+    --s-dallas: #eda100;
+    --s-national: #8a8984;
+    --up: #b4352f;
+    --down: #1f7a3d;
+    --chip-off: #d9d7cf;
+    --warn: #8a5a00;
+    --warn-bg: #fbe7b5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-0: #121211;
+      --surface-1: #1a1a19;
+      --border: #2e2e2c;
+      --grid: #262624;
+      --text-primary: #f0efec;
+      --text-secondary: #c3c2b7;
+      --text-muted: #8f8e88;
+      --s-omv: #3987e5;
+      --s-avia: #d95926;
+      --s-mpetrol: #199e70;
+      --s-dallas: #c98500;
+      --s-national: #8f8e88;
+      --up: #e66767;
+      --down: #4cbf6f;
+      --chip-off: #3a3a37;
+      --warn: #f5c45a;
+      --warn-bg: #4a3a12;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-0: #121211; --surface-1: #1a1a19; --border: #2e2e2c; --grid: #262624;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e88;
+    --s-omv: #3987e5; --s-avia: #d95926; --s-mpetrol: #199e70; --s-dallas: #c98500; --s-national: #8f8e88;
+    --up: #e66767; --down: #4cbf6f; --chip-off: #3a3a37; --warn: #f5c45a; --warn-bg: #4a3a12;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--surface-0); color: var(--text-primary);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 48px; }
+  header h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  header p { margin: 0; color: var(--text-secondary); }
+  .meta { margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+  .tabs { display: flex; gap: 6px; margin: 20px 0 12px; flex-wrap: wrap; }
+  .tab {
+    border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
+    padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer;
+  }
+  .tab[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); border-color: var(--text-primary); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+    border-top: 4px solid var(--c);
+  }
+  .card .name { font-weight: 600; font-size: 14px; }
+  .card .addr { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .card .price { font-size: 26px; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .card .price small { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .card .na { font-size: 15px; color: var(--text-muted); padding: 8px 0 5px; }
+  .card .delta { font-size: 13px; font-variant-numeric: tabular-nums; color: var(--text-secondary); min-height: 19px; }
+  .bang {
+    display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px;
+    border-radius: 50%; background: var(--warn-bg); color: var(--warn); font-size: 12px; font-weight: 700;
+    line-height: 1; vertical-align: 3px; flex: none;
+  }
+  .card .delta.stale { color: var(--text-secondary); display: flex; gap: 6px; align-items: flex-start; }
+  .card .delta.stale .bang { vertical-align: 0; margin-top: 1px; }
+  .tip .bang, td .bang { width: 15px; height: 15px; font-size: 11px; vertical-align: 1px; margin-left: 4px; }
+  .card .delta.up { color: var(--up); } .card .delta.down { color: var(--down); }
+  .card .src { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+  .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-top: 16px; }
+  .panel h2 { font-size: 16px; margin: 0 0 2px; }
+  .panel .sub { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: 13px;
+    border: 1px solid var(--border); background: transparent; color: var(--text-primary);
+    padding: 5px 11px 5px 9px; border-radius: 999px; cursor: pointer; min-height: 32px;
+  }
+  .chip .sw { width: 14px; height: 4px; border-radius: 2px; background: var(--c); }
+  .chip.dashed .sw { background: repeating-linear-gradient(90deg, var(--c) 0 4px, transparent 4px 7px); }
+  .chip[aria-pressed="false"] { color: var(--text-muted); }
+  .chip[aria-pressed="false"] .sw { background: var(--chip-off); }
+  .chip[aria-pressed="false"] .lbl { text-decoration: line-through; }
+  .chart { position: relative; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .axis text { fill: var(--text-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .tip {
+    position: absolute; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    min-width: 170px; display: none; z-index: 2;
+  }
+  .tip .d { font-weight: 600; margin-bottom: 4px; }
+  .tip .r { display: flex; align-items: center; gap: 6px; justify-content: space-between; font-variant-numeric: tabular-nums; }
+  .tip .r span:first-child { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .empty { padding: 40px 12px; text-align: center; color: var(--text-muted); }
+  details { margin-top: 12px; }
+  summary { cursor: pointer; color: var(--text-secondary); font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 6px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  .tablewrap { overflow-x: auto; }
+  .notes { font-size: 13px; color: var(--text-secondary); margin-top: 16px; }
+  .notes ul { margin: 6px 0 0; padding-left: 18px; }
+  .notes a { color: inherit; }
+  .status { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Benzinárak a környéken</h1>
+    <p>OMV Soroksár · AVIA Kőbánya · M.Petrol (az elefántos) · Dallas Kőbánya — minden reggel 7:30-kor frissül</p>
+    <div class="meta" id="meta">Adatok betöltése…</div>
+  </header>
+
+  <div class="tabs" role="group" aria-label="Üzemanyag fajta" id="tabs"></div>
+
+  <section class="cards" id="cards" aria-live="polite"></section>
+
+  <section class="panel">
+    <h2 id="chartTitle">Az elmúlt 30 nap</h2>
+    <p class="sub">Ft/liter. Kattints egy kútra a ki- vagy bekapcsolásához. Az üres karika és a <span class="bang">!</span> azt jelzi, hogy aznapra nem volt friss ár, ezért a legutóbbi ismert ár látszik.</p>
+    <div class="legend" id="legend"></div>
+    <div class="chart" id="chart"></div>
+    <details>
+      <summary>Táblázatos nézet</summary>
+      <div class="tablewrap" id="table"></div>
+    </details>
+  </section>
+
+  <div class="notes">
+    <strong>Források és megjegyzések</strong>
+    <ul>
+      <li>Az árakat minden reggel egy automatikus feladat gyűjti nyilvános ár-összehasonlító oldalakról (pl. <a href="https://petromap.eu/hu/station/omv-budapest-9e4502">petromap.eu</a>, <a href="https://holtankoljak.hu/">holtankoljak.hu</a>, fuelo.net). Minden kártyán látszik, honnan jött az adott ár.</li>
+      <li>Ha egy kúthoz aznap nem volt friss ár, a legutóbbi ismert ár látszik egy <span class="bang">!</span> jellel, mellette a dátummal, amikor utoljára frissült. „Nincs adat” csak akkor szerepel, ha a kúthoz még egyáltalán nem volt ár.</li>
+      <li>Az országos átlag a holtankoljak.hu napi közléséből van, viszonyítási alapnak.</li>
+      <li>Csak városi kutakat figyelünk, autópályás árakat nem.</li>
+      <li>Az AVIA-nál november 11-ig a vecsési (Üllői út 812.) kút volt beállítva, ahhoz nem volt friss ár; azóta a Keresztúri úti kút szerepel.</li>
+      <li>A grafikon az első frissítés napjától (2026. november 11.) töltődik fel; 30 nap után mindig az utolsó 30 nap látszik.</li>
+    </ul>
+  </div>
+  <div class="status" id="status"></div>
+  <div class="status">v0.3.0</div>
+</div>
+
+<script>
+(() => {
+  const SERIES = [
+    { key: "omv",      name: "OMV",        addr: "Soroksár, Nagykőrösi út 349.", color: "--s-omv" },
+    { key: "avia",     name: "AVIA",       addr: "X., Keresztúri út 108/a",      color: "--s-avia" },
+    { key: "mpetrol",  name: "M.Petrol",   addr: "XIX., Citroën utca 2.",        color: "--s-mpetrol" },
+    { key: "dallas",   name: "Dallas",     addr: "X., Száva utca 5–7.",          color: "--s-dallas" },
+    { key: "national", name: "Országos átlag", addr: "holtankoljak.hu",          color: "--s-national", dashed: true },
+  ];
+  const FUELS = [
+    { key: "b95",  label: "95-ös benzin" },
+    { key: "b95p", label: "Prémium 95" },
+    { key: "b100", label: "100-as benzin" },
+  ];
+  const state = { fuel: "b95", hidden: new Set(), days: [], idx: new Map() };
+  try { const s = JSON.parse(localStorage.getItem("benzin-prefs") || "{}");
+    if (s.fuel && FUELS.some(f => f.key === s.fuel)) state.fuel = s.fuel;
+    if (Array.isArray(s.hidden)) s.hidden.forEach(k => state.hidden.add(k));
+  } catch (e) {}
+  const savePrefs = () => { try { localStorage.setItem("benzin-prefs", JSON.stringify({ fuel: state.fuel, hidden: [...state.hidden] })); } catch (e) {} };
+
+  const $ = id => document.getElementById(id);
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const fmt = n => n == null ? "–" : n.toLocaleString("hu-HU", { maximumFractionDigits: 1 });
+  const dayLabel = iso => { const d = new Date(iso + "T12:00:00"); return d.toLocaleDateString("hu-HU", { month: "short", day: "numeric" }); };
+  const longDay = iso => { const d = new Date(iso + "T12:00:00"); return d.toLocaleDateString("hu-HU", { year: "numeric", month: "long", day: "numeric", weekday: "long" }); };
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const num = v => (typeof v === "number" && isFinite(v) && v > 0) ? v : null;
+
+  const recOf = (day, key) => !day ? null : (key === "national" ? day.national : (day.stations || {})[key]) || null;
+  // Effective price for a day: the day's own price if there is one, otherwise the latest
+  // known earlier price, marked stale. A price the daily job stored as not fresh is stale too.
+  function eff(day, key, fuel) {
+    if (!day) return null;
+    const i = state.idx.get(day.date);
+    for (let j = i; j != null && j >= 0; j--) {
+      const d = state.days[j], rec = recOf(d, key), v = rec ? num(rec[fuel]) : null;
+      if (v == null) continue;
+      const ownStale = !!rec.stale;
+      return {
+        v, src: rec.src || null,
+        stale: j !== i || ownStale,
+        asOf: ownStale ? (typeof rec.asOf === "string" ? rec.asOf : null) : d.date,
+      };
+    }
+    return null;
+  }
+  const valueOf = (day, key, fuel) => { const e = eff(day, key, fuel); return e ? e.v : null; };
+  const srcOf = (day, key) => recOf(day, key);
+  const staleText = e => e.asOf ? `nem friss – legutóbbi ismert ár: ${dayLabel(e.asOf)}` : "nem friss – legutóbbi ismert ár, dátum nélkül";
+
+  // Tabs
+  function renderTabs() {
+    $("tabs").innerHTML = FUELS.map(f =>
+      `<button class="tab" aria-pressed="${f.key === state.fuel}" data-fuel="${f.key}">${f.label}</button>`).join("");
+  }
+  $("tabs").addEventListener("click", e => {
+    const b = e.target.closest("[data-fuel]"); if (!b) return;
+    state.fuel = b.dataset.fuel; savePrefs(); renderAll();
+  });
+
+  // Cards
+  function renderCards() {
+    const days = state.days, last = days[days.length - 1];
+    if (!last) { $("cards").innerHTML = ""; return; }
+    $("cards").innerHTML = SERIES.map(s => {
+      const e = eff(last, s.key, state.fuel), v = e ? e.v : null;
+      let prev = null;
+      for (let i = days.length - 2; i >= 0; i--) { const p = valueOf(days[i], s.key, state.fuel); if (p != null) { prev = p; break; } }
+      const own = srcOf(last, s.key);
+      const rec = e && e.stale && !(own && num(own[state.fuel])) ? { src: e.src } : own;
+      let delta = "";
+      if (e && e.stale) {
+        delta = `<div class="delta stale"><span class="bang" aria-hidden="true">!</span> ${esc(staleText(e))}</div>`;
+      } else if (v != null && prev != null) {
+        const d = Math.round((v - prev) * 10) / 10;
+        delta = d === 0 ? `<div class="delta">változatlan</div>`
+          : `<div class="delta ${d > 0 ? "up" : "down"}">${d > 0 ? "▲ +" : "▼ "}${fmt(d)} Ft az előzőhöz képest</div>`;
+      } else delta = `<div class="delta"></div>`;
+      const src = rec && rec.src ? `<div class="src">Forrás: ${esc(rec.src)}${rec.note ? " · " + esc(rec.note) : ""}</div>`
+                                 : `<div class="src">${rec && rec.note ? esc(rec.note) : ""}</div>`;
+      const body = v != null
+        ? `<div class="price">${fmt(v)} <small>Ft/l</small>${e.stale ? ` <span class="bang" title="${esc(staleText(e))}">!</span>` : ""}</div>${delta}`
+        : `<div class="na">nincs adat</div><div class="delta"></div>`;
+      return `<article class="card" style="--c: var(${s.color})">
+        <div class="name">${esc(s.name)}</div><div class="addr">${esc(s.addr)}</div>${body}${src}</article>`;
+    }).join("");
+  }
+
+  // Legend / toggles
+  function renderLegend() {
+    $("legend").innerHTML = SERIES.map(s =>
+      `<button class="chip${s.dashed ? " dashed" : ""}" style="--c: var(${s.color})" data-key="${s.key}" aria-pressed="${!state.hidden.has(s.key)}">
+        <span class="sw"></span><span class="lbl">${esc(s.name)}</span></button>`).join("");
+  }
+  $("legend").addEventListener("click", e => {
+    const b = e.target.closest("[data-key]"); if (!b) return;
+    const k = b.dataset.key;
+    state.hidden.has(k) ? state.hidden.delete(k) : state.hidden.add(k);
+    savePrefs(); renderLegend(); renderChart();
+  });
+
+  // Chart
+  function renderChart() {
+    const host = $("chart");
+    const fuelLabel = FUELS.find(f => f.key === state.fuel).label;
+    $("chartTitle").textContent = `${fuelLabel} – az elmúlt 30 nap`;
+    const days = state.days;
+    const visible = SERIES.filter(s => !state.hidden.has(s.key));
+    const vals = [];
+    days.forEach(d => visible.forEach(s => { const v = valueOf(d, s.key, state.fuel); if (v != null) vals.push(v); }));
+    if (!days.length) { host.innerHTML = `<div class="empty">Még nincs mentett adat. Az első adatsor a következő reggeli frissítéssel érkezik.</div>`; return; }
+    if (!visible.length) { host.innerHTML = `<div class="empty">Minden kút ki van kapcsolva – kattints egy kútra fent.</div>`; return; }
+    if (!vals.length) { host.innerHTML = `<div class="empty">Ehhez az üzemanyag-fajtához még nincs adat a kiválasztott kutaknál.</div>`; return; }
+
+    const W = Math.max(320, host.clientWidth || 900), H = W < 560 ? 260 : 320;
+    const m = { t: 12, r: 16, b: 28, l: 44 };
+    const iw = W - m.l - m.r, ih = H - m.t - m.b;
+    let lo = Math.min(...vals), hi = Math.max(...vals);
+    const pad = Math.max(4, (hi - lo) * 0.15); lo -= pad; hi += pad;
+    const step = niceStep((hi - lo) / 4);
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    // x: always span 30 days ending at the latest day, so the axis doesn't jump around
+    const lastDate = new Date(days[days.length - 1].date + "T12:00:00");
+    const firstDate = new Date(lastDate); firstDate.setDate(firstDate.getDate() - 29);
+    const dayIdx = iso => Math.round((new Date(iso + "T12:00:00") - firstDate) / 864e5);
+    const x = i => m.l + (i / 29) * iw;
+    const y = v => m.t + ih - ((v - lo) / (hi - lo)) * ih;
+
+    let g = "";
+    for (let v = lo; v <= hi + 1e-9; v += step) {
+      g += `<line class="gridline" x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}"/>`;
+      g += `<text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${fmt(v)}</text>`;
+    }
+    const tickEvery = W < 560 ? 7 : 5;
+    for (let i = 0; i <= 29; i += tickEvery) {
+      const d = new Date(firstDate); d.setDate(d.getDate() + i);
+      g += `<text x="${x(i)}" y="${H - 8}" text-anchor="middle">${d.toLocaleDateString("hu-HU", { month: "short", day: "numeric" })}</text>`;
+    }
+    const surface = css("--surface-1");
+    let lines = "", dots = "";
+    visible.forEach(s => {
+      const col = css(s.color);
+      const pts = days.map(d => { const e = eff(d, s.key, state.fuel);
+        return { i: dayIdx(d.date), v: e ? e.v : null, stale: !!(e && e.stale) }; }).filter(p => p.i >= 0 && p.i <= 29);
+      // the line only runs through fresh prices; stale (last known) prices are hollow markers
+      let path = "", pen = false, prevI = null;
+      pts.forEach(p => {
+        if (p.v == null || p.stale) { pen = false; return; }
+        // break the line if a whole day is missing between two points
+        const cmd = (!pen || (prevI != null && p.i - prevI > 1)) ? "M" : "L";
+        path += `${cmd}${x(p.i).toFixed(1)},${y(p.v).toFixed(1)}`; pen = true; prevI = p.i;
+      });
+      if (path) lines += `<path d="${path}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dashed ? ' stroke-dasharray="5 4"' : ""}/>`;
+      // markers only where a line can't show the point: isolated days, and the latest value
+      const have = new Set(pts.filter(p => p.v != null && !p.stale).map(p => p.i));
+      const lastI = Math.max(-1, ...have);
+      pts.forEach(p => {
+        if (p.v == null) return;
+        if (p.stale)
+          dots += `<circle cx="${x(p.i)}" cy="${y(p.v)}" r="4" fill="${surface}" stroke="${col}" stroke-width="2"/>`;
+        else if (p.i === lastI || (!have.has(p.i - 1) && !have.has(p.i + 1)))
+          dots += `<circle cx="${x(p.i)}" cy="${y(p.v)}" r="4" fill="${col}" stroke="${surface}" stroke-width="2"/>`;
+      });
+    });
+    host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(fuelLabel)} ára kutanként, az elmúlt 30 napban">
+      <g class="axis">${g}</g>${lines}${dots}
+      <line id="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t + ih}" stroke="${css("--text-muted")}" stroke-width="1" visibility="hidden"/>
+      <rect id="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/></svg>
+      <div class="tip" id="tip"></div>`;
+
+    const svg = host.querySelector("svg"), tip = $("tip"), xh = svg.querySelector("#xh");
+    const byIdx = new Map(days.map(d => [dayIdx(d.date), d]));
+    const move = ev => {
+      const r = svg.getBoundingClientRect(), scale = W / r.width;
+      const px = (ev.clientX - r.left) * scale;
+      let i = Math.round(((px - m.l) / iw) * 29); i = Math.max(0, Math.min(29, i));
+      // snap to nearest day with data
+      let best = null;
+      for (const k of byIdx.keys()) if (best == null || Math.abs(k - i) < Math.abs(best - i)) best = k;
+      if (best == null) return;
+      const d = byIdx.get(best);
+      xh.setAttribute("x1", x(best)); xh.setAttribute("x2", x(best)); xh.setAttribute("visibility", "visible");
+      const rows = visible.map(s => {
+        const e = eff(d, s.key, state.fuel);
+        const val = !e ? "nincs adat" : fmt(e.v) + " Ft" + (e.stale ? `<span class="bang" title="${esc(staleText(e))}">!</span>` : "");
+        return `<div class="r"><span><i class="dot" style="--c: var(${s.color})"></i>${esc(s.name)}</span><b>${val}</b></div>`;
+      }).join("");
+      tip.innerHTML = `<div class="d">${esc(longDay(d.date))}</div>${rows}`;
+      tip.style.display = "block";
+      const hostW = host.clientWidth, tx = x(best) / scale;
+      tip.style.left = Math.min(Math.max(0, tx + 12), hostW - tip.offsetWidth) + "px";
+      tip.style.top = "8px";
+    };
+    const hide = () => { tip.style.display = "none"; xh.setAttribute("visibility", "hidden"); };
+    svg.addEventListener("pointermove", move);
+    svg.addEventListener("pointerdown", move);
+    svg.addEventListener("pointerleave", hide);
+  }
+  function niceStep(raw) {
+    const p = Math.pow(10, Math.floor(Math.log10(raw || 1)));
+    const n = raw / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * p;
+  }
+
+  function renderTable() {
+    const days = state.days.slice().reverse();
+    if (!days.length) { $("table").innerHTML = ""; return; }
+    const fuelLabel = FUELS.find(f => f.key === state.fuel).label;
+    $("table").innerHTML = `<table><caption style="text-align:left;color:var(--text-muted);font-size:12px;padding:4px 0">${esc(fuelLabel)}, Ft/l</caption>
+      <thead><tr><th>Nap</th>${SERIES.map(s => `<th>${esc(s.name)}</th>`).join("")}</tr></thead>
+      <tbody>${days.map(d => `<tr><td>${esc(dayLabel(d.date))}</td>${SERIES.map(s => { const e = eff(d, s.key, state.fuel);
+        return `<td>${e ? fmt(e.v) : "–"}${e && e.stale ? `<span class="bang" title="${esc(staleText(e))}">!</span>` : ""}</td>`; }).join("")}</tr>`).join("")}</tbody></table>`;
+  }
+
+  function renderMeta() {
+    const last = state.days[state.days.length - 1];
+    if (!last) { $("meta").textContent = "Még nincs mentett adat."; return; }
+    const t = last.updatedAt ? new Date(last.updatedAt) : null;
+    $("meta").textContent = `Utolsó frissítés: ${longDay(last.date)}${t && !isNaN(t) ? ", " + t.toLocaleTimeString("hu-HU", { hour: "2-digit", minute: "2-digit" }) : ""} · ${state.days.length} nap adata`;
+  }
+
+  function renderAll() { renderTabs(); renderMeta(); renderCards(); renderLegend(); renderChart(); renderTable(); }
+
+  let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(renderChart, 120); });
+  if (window.matchMedia) matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", renderChart);
+  new MutationObserver(renderChart).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  renderAll();
+
+  // Data
+  const timer = setTimeout(() => { $("status").textContent = "Az adatok most nem érhetők el – próbáld újra később."; }, 10000);
+  (async () => {
+    const db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+    if (!db) { clearTimeout(timer); $("meta").textContent = "Az adatok ebben a nézetben nem érhetők el (bejelentkezés szükséges)."; return; }
+    db.collection("prices").orderBy("date", "desc").limit(30).onSnapshot(snap => {
+      if (!snap.metadata.fromCache) { clearTimeout(timer); $("status").textContent = ""; }
+      state.days = snap.docs.map(d => d.data()).filter(d => d && typeof d.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d.date))
+        .sort((a, b) => a.date < b.date ? -1 : 1);
+      state.idx = new Map(state.days.map((d, i) => [d.date, i]));
+      renderAll();
+    }, err => {
+      clearTimeout(timer);
+      $("status").textContent = "Az adatok betöltése nem sikerült.";
+    });
+  })();
+})();
+</script>
+</body>
+</html>

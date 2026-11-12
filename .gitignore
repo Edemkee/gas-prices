@@ -1,0 +1,30 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.keystore
+*.jks
+*.local
+
+# Netlify (local state, if/when the project moves there)
+.netlify/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+
+# Test output
+tests/out/
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
