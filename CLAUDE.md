@@ -1,6 +1,6 @@
 # CLAUDE.md – projekt döntések és munkaszabályok
 
-A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el kell olvasni ezt a fájlt, a `plan.md`-t és a `CHANGELOG.md`-t, meg kell nézni a `VERSION`-t és a legutóbbi taget, aztán a `plan.md` aktuális vagy következő tételével kell folytatni.
+A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el kell olvasni ezt a fájlt, a `PLAN.md`-t és a `CHANGELOG.md`-t, meg kell nézni a `VERSION`-t és a legutóbbi taget, aztán a `PLAN.md` aktuális vagy következő tételével kell folytatni.
 
 ## A projekt röviden
 
@@ -41,8 +41,11 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 
 ## Döntések (legújabb felül)
 
+- **2026-11-12 – A tervfájl neve `PLAN.md` (nagybetűvel),** a dev-workflow skillben is. *Indok:* a felhasználó kérése.
+- **2026-11-12 – Amíg nincs GitHub-remote, a változás helyi branchen készül, és fast-forwarddal kerül a `main`-re, utána jön a tag.** Amint megvan a remote, a változások PR-on keresztül mennek. *Indok:* PR remote nélkül nem nyitható; a lépések sorrendje így is a skillt követi.
+
 - **2026-11-12 – A dev-workflow skill bevezetése.** A korábbi v0.1–v0.3 a skill szerint 0.1.0–0.3.0. A minor léptetés szabálya változatlan (0.9 után 0.10); új a PATCH szám az apró javításokra. *Indok:* a felhasználó kérte; a két szabály összefér.
-- **2026-11-12 – Projektméret: kis projekt.** Kötelező: README, .gitignore, VERSION, plan.md, CLAUDE.md, CHANGELOG.md. A features.md, az architecture.md és a CI később jön, ha a projekt nő. *Indok:* egyetlen HTML-oldal és egy ütemezett feladat.
+- **2026-11-12 – Projektméret: kis projekt.** Kötelező: README, .gitignore, VERSION, PLAN.md, CLAUDE.md, CHANGELOG.md. A features.md, az architecture.md és a CI később jön, ha a projekt nő. *Indok:* egyetlen HTML-oldal és egy ütemezett feladat.
 - **2026-11-12 – Könyvtárszerkezet:** `src/` (oldal), `ops/` (ütemezett feladat utasítása), `tests/` (smoke teszt). *Indok:* a skill GitHub-kész struktúrát kér.
 - **2026-11-12 – Helyi git repo, első commit a v0.3.0 állapota, tag `v0.3.0`.** A v0.1.0 és v0.2.0 csak a CHANGELOG-ban szerepel. *Indok:* ezek git nélkül készültek; utólag kitalált commitokat nem gyártunk.
 - **2026-11-11 – A Netlify-átköltözés opció marad (plan 16.), nem döntés.** *Indok:* előbb a GitHub-kapcsolat kell, és a petromap felhasználási feltételeit is meg kell nézni.

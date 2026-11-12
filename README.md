@@ -27,7 +27,7 @@ A teszt kitalált mintaadattal, világos és sötét módban, asztali és mobil 
 
 ## Dokumentumok
 
-- `plan.md` – teendők, ötletek, állapotokkal
+- `PLAN.md` – teendők, ötletek, állapotokkal
 - `CLAUDE.md` – döntések és munkaszabályok
 - `CHANGELOG.md` – verziónkénti változások
 - `VERSION` – aktuális verzió

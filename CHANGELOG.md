@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1 - 2026-11-12
+### Changed
+- `plan.md` átnevezve `PLAN.md`-re; a hivatkozások frissítve (README, CLAUDE.md)
+
 ## v0.3.0 - 2026-11-12
 ### Added
 - Legutóbbi ismert ár: ha egy kúthoz aznap nincs friss ár, a legutóbbi ismert ár látszik „!” jellel és a legutóbbi frissítés dátumával – a kártyákon, a diagramon (üres karika), a buborékban és a táblázatban is

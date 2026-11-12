@@ -13,7 +13,8 @@
 | 7 | Legutóbbi ismert ár „!” jellel, mind a négy kútra | done | v0.3.0 |
 | 8 | Dev-workflow struktúra: README, VERSION, CHANGELOG, .gitignore, `src/`, `ops/`, `tests/` | done | v0.3.0 |
 | 9 | Smoke teszt headless Chrome-mal | done | v0.3.0, `tests/smoke_test.py` |
-| 10 | GitHub repo összekapcsolása, push, `v0.3.0` tag | open | a felhasználó otthon, a saját gépéről köti össze; a helyi repo és az első commit kész |
+| 24 | A tervfájl neve `PLAN.md` (nagybetűvel) | done | v0.3.1 |
+| 10 | GitHub repo összekapcsolása, push, tagek (`v0.3.0`, `v0.3.1`) | open | a felhasználó otthon, a saját gépéről köti össze; a helyi repo és az első commit kész |
 | 11 | GitHub secret scanning és push protection bekapcsolása | open | a repo beállításaiban, a 10. után |
 | 12 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | open | |
 | 13 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
