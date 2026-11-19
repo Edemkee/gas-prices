@@ -7,6 +7,8 @@ sample (fake) price records, then checks the main behaviour:
   - a record stored as stale (stale: true) shows the "!" badge
   - a station that never had a price shows "nincs adat"
   - the chart renders, and clicking a legend chip hides that series
+  - the graphics card board (collection "gpus") renders its three cards, carries a
+    missing Árukereső price over with "!", switches to the Alza prices, and draws its chart
   - no JavaScript errors
 
 Run:  python3 tests/smoke_test.py            (needs: pip install playwright, plus Chrome/Chromium)
@@ -50,12 +52,36 @@ def sample_days():
     return days
 
 
+def sample_gpu_days():
+    """6 days of fake graphics card prices. Last day: 5070 Ti Gaming OC fresh,
+    5070 Ti Eagle without an Árukereső price (carried over) but with an Alza price,
+    5080 Gaming OC fresh."""
+    base = datetime.date(2026, 11, 6)
+    days = []
+    for i in range(6):
+        d = base + datetime.timedelta(days=i)
+        last = i == 5
+        days.append({
+            "date": d.isoformat(),
+            "updatedAt": f"{d.isoformat()}T09:40:00Z",
+            "cards": {
+                "g5070ti_gaming": {"low": 500000 - i * 1000, "offers": 20, "alza": 510000},
+                "g5070ti_eagle": ({"low": None, "offers": None, "alza": 470000, "alzaStock": "Raktáron",
+                                   "note": "az Árukereső nem volt elérhető"}
+                                  if last else {"low": 480000, "offers": 15, "alza": 471000}),
+                "g5080_gaming": {"low": 650000 + i * 2000, "offers": 30, "alza": None},
+            },
+        })
+    return days
+
+
 def mocked_html():
     html = PAGE.read_text(encoding="utf-8")
+    data = {"prices": sample_days(), "gpus": sample_gpu_days()}
     mock = (
-        "<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({limit:()=>({"
-        "onSnapshot:(cb)=>{setTimeout(()=>cb({metadata:{fromCache:false},docs:%s.map(d=>({data:()=>d}))}),30);"
-        "return()=>{}}})})})}:null};</script>" % json.dumps(sample_days())
+        "<script>window.claude={use:async n=>n==='db'?{collection:(c)=>({orderBy:()=>({limit:()=>({"
+        "onSnapshot:(cb)=>{setTimeout(()=>cb({metadata:{fromCache:false},docs:(%s[c]||[]).map(d=>({data:()=>d}))}),30);"
+        "return()=>{}}})})})}:null};</script>" % json.dumps(data)
     )
     return html.replace("<body>", "<body>" + mock, 1)
 
@@ -82,7 +108,7 @@ async def main():
             await page.wait_for_timeout(500)
             tag = f"[{scheme} {width}px]"
 
-            cards = await page.locator(".card").all_inner_texts()
+            cards = await page.locator("#cards .card").all_inner_texts()
             check(len(cards) == 5, f"{tag} 5 cards rendered")
             omv, avia, mpetrol, dallas = cards[0], cards[1], cards[2], cards[3]
             check("596" in omv and "!" not in omv, f"{tag} OMV shows fresh latest price without '!'")
@@ -102,6 +128,24 @@ async def main():
             after = await page.locator("#chart svg path").count()
             check(after == before - 1, f"{tag} toggling OMV removes its line")
             await page.locator('.chip[data-key="omv"]').click()
+
+            # graphics card board
+            g = await page.locator("#g-cards .card").all_inner_texts()
+            check(len(g) == 3, f"{tag} 3 graphics card cards rendered")
+            if len(g) == 3:
+                check("495 000" in g[0].replace("\u00a0", " ") and "!" not in g[0],
+                      f"{tag} 5070 Ti Gaming OC shows its fresh Árukereső price")
+                check("480 000" in g[1].replace("\u00a0", " ") and "!" in g[1] and "nov. 10." in g[1],
+                      f"{tag} 5070 Ti Eagle without today's Árukereső price shows last known with '!'")
+                check("Alza ár ma: 470 000" in g[1].replace("\u00a0", " "),
+                      f"{tag} 5070 Ti Eagle card shows today's Alza price as cross-check")
+            check(await page.locator("#g-chart svg path").count() == 3, f"{tag} graphics card chart lines rendered")
+            await page.locator('#g-tabs [data-fuel="alza"]').click()
+            await page.wait_for_timeout(100)
+            g2 = await page.locator("#g-cards .card").all_inner_texts()
+            check(len(g2) == 3 and "470 000" in g2[1].replace("\u00a0", " ") and "nincs adat" in g2[2],
+                  f"{tag} switching to Alza shows Alza prices ('nincs adat' where Alza has none)")
+            await page.locator('#g-tabs [data-fuel="low"]').click()
 
             await page.screenshot(path=str(OUT / f"smoke-{scheme}.png"), full_page=True)
             check(not errors, f"{tag} no JavaScript errors {errors if errors else ''}")
