@@ -216,9 +216,9 @@
   // The fuel prices and the graphics card prices are two boards with the same behaviour.
   function makeBoard(cfg) {
     const el = k => $(cfg.ids[k]);
-    const st = { metric: cfg.metrics[0].key, hidden: new Set(), days: [], idx: new Map() };
+    const st = { metric: cfg.metrics[0].key, picked: false, hidden: new Set(), days: [], idx: new Map() };
     try { const s = JSON.parse(localStorage.getItem(cfg.prefsKey) || "{}");
-      if (s.fuel && cfg.metrics.some(f => f.key === s.fuel)) st.metric = s.fuel;
+      if (s.fuel && cfg.metrics.some(f => f.key === s.fuel)) { st.metric = s.fuel; st.picked = true; }
       if (Array.isArray(s.hidden)) s.hidden.forEach(k => st.hidden.add(k));
     } catch (e) {}
     const savePrefs = () => { try { localStorage.setItem(cfg.prefsKey, JSON.stringify({ fuel: st.metric, hidden: [...st.hidden] })); } catch (e) {} };
@@ -247,7 +247,7 @@
     }
     el("tabs").addEventListener("click", e => {
       const b = e.target.closest("[data-fuel]"); if (!b) return;
-      st.metric = b.dataset.fuel; savePrefs(); renderAll();
+      st.metric = b.dataset.fuel; st.picked = true; savePrefs(); renderAll();
     });
 
     function renderCards() {
@@ -410,6 +410,11 @@
       st.days = list.filter(d => d && typeof d.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d.date))
         .sort((a, b) => a.date < b.date ? -1 : 1);
       st.idx = new Map(st.days.map((d, i) => [d.date, i]));
+      // until the visitor picks a view, open on the first one that has any data
+      if (!st.picked) {
+        const has = k => st.days.some(d => cfg.series.some(s => { const r = recOf(d, s.key); return r && num(r[k]) != null; }));
+        if (!has(st.metric)) { const f = cfg.metrics.find(m => has(m.key)); if (f) st.metric = f.key; }
+      }
       renderAll();
     }
     return { renderAll, renderChart, setDays, setMeta: t => { el("meta").textContent = t; } };

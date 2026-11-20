@@ -75,9 +75,9 @@ def sample_gpu_days():
     return days
 
 
-def mocked_html():
+def mocked_html(data=None):
     html = PAGE.read_text(encoding="utf-8")
-    data = {"prices": sample_days(), "gpus": sample_gpu_days()}
+    data = data or {"prices": sample_days(), "gpus": sample_gpu_days()}
     mock = (
         "<script>window.claude={use:async n=>n==='db'?{collection:(c)=>({orderBy:()=>({limit:()=>({"
         "onSnapshot:(cb)=>{setTimeout(()=>cb({metadata:{fromCache:false},docs:(%s[c]||[]).map(d=>({data:()=>d}))}),30);"
@@ -146,6 +146,16 @@ async def main():
             check(len(g2) == 3 and "470 000" in g2[1].replace("\u00a0", " ") and "nincs adat" in g2[2],
                   f"{tag} switching to Alza shows Alza prices ('nincs adat' where Alza has none)")
             await page.locator('#g-tabs [data-fuel="low"]').click()
+
+            # a board whose default view has no data opens on the view that has data
+            only_alza = [{"date": "2026-11-20", "cards": {"g5080_gaming": {"low": None, "alza": 576990}}}]
+            p2 = await browser.new_page(viewport={"width": width, "height": 900}, color_scheme=scheme)
+            f2 = OUT / "smoke-alza-only.html"
+            f2.write_text(mocked_html({"prices": sample_days(), "gpus": only_alza}), encoding="utf-8")
+            await p2.goto(f2.as_uri()); await p2.wait_for_timeout(400)
+            pressed = await p2.locator('#g-tabs [aria-pressed="true"]').inner_text()
+            check(pressed == "Alza ár", f"{tag} with no Árukereső data at all the board opens on 'Alza ár'")
+            await p2.close()
 
             await page.screenshot(path=str(OUT / f"smoke-{scheme}.png"), full_page=True)
             check(not errors, f"{tag} no JavaScript errors {errors if errors else ''}")
