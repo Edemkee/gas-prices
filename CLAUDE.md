@@ -10,6 +10,7 @@ A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el
 - **Előnézet:** külön artifact, slug `5b02d724-566f-4cf2-92fa-8dd3a66be135`, https://claude.ai/artifact/CEq78EWUwDydsbWYSspjkx – mindig az éppen nyitott PR változata, „ELŐNÉZET” sávval, az élő adatok másolatával.
 - **Élesítés:** ütemezett feladat `trig_01Akn5KntCGmtcUAL7wnHAb8`, óránként 7:40 és 21:40 között (CET): ha a `main` verziója újabb, mint az élő oldalé, kiteszi a `main` `src/index.html`-jét. Az utasítás másolata: `ops/deploy-task-prompt.md`.
 - **Napi frissítés:** ütemezett feladat `trig_014Wn2DqKxeVYLwMReaoytSS`, minden nap 10:20 (CET, `CRON_TZ=CET`). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
+- **Videókártya-árak:** ütemezett feladat `trig_01V2YBC9sRfcixg2hzfCZpJs`, minden nap 10:35 (CET, `CRON_TZ=CET`), a `gpus` kollekcióba ír. Az utasítás másolata: `ops/gpu-task-prompt.md`.
 - **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
 
 ## Adatmodell
@@ -30,6 +31,22 @@ Kollekció: `prices`, dokumentumazonosító: `YYYY-MM-DD` (budapesti nap). Írni
 }
 ```
 
+Videókártyák: kollekció `gpus`, dokumentumazonosító `YYYY-MM-DD`, ugyanazokkal a jogokkal.
+
+```json
+{
+  "date": "2026-11-20",
+  "updatedAt": "2026-11-20T09:40:00Z",
+  "cards": {
+    "g5070ti_gaming": { "low": 500000, "offers": 20, "alza": 490000, "alzaStock": "Raktáron > 5 db" },
+    "g5070ti_eagle":  { "low": null, "offers": null, "alza": 470000, "alzaStock": "Raktáron > 5 db", "note": "az Árukereső nem volt elérhető" },
+    "g5080_gaming":   { "low": 600000, "offers": 30, "alza": 610000, "alzaStock": "Raktáron > 5 db" }
+  }
+}
+```
+
+(A fenti számok a séma szemléltetésére szolgálnak, nem valódi rekord.) `low` = Árukereső legolcsóbb, `alza` = Alza saját ára. A videókártya-feladat nem ír be „nem friss” árat: ami aznap nincs meg, az null, és az oldal a legutóbbi ismert árat mutatja „!” jellel.
+
 Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, "asOf": "2026-11-08", "note": "nem friss ár" }`; ha nincs dátum, az `asOf` null. Ugyanarra a napra az újabb futás felülírja a rekordot (`set`, `ifVersion`-nel). Az oldal az utolsó 30 rekordot olvassa élőben. Kapacitás: 25 000 dokumentum.
 
 ## Munkaszabályok
@@ -41,11 +58,15 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 - Az oldal módosítása: `src/index.html` szerkesztése, smoke teszt, PR. **Az élő artifactra Claude kézzel nem publikál**; azt merge után az élesítő feladat teszi ki.
 - **Előnézet minden PR-nál:** a PR megnyitásakor (és minden új commit után) `python3 ops/make_preview.py "PR #<n> · v<VERSION>" /home/claude/preview/index.html`, majd `publish_files` az előnézeti artifactra (`mode: patch`, `as: index.html`). Előtte az élő `prices` rekordokat át kell másolni az előnézet adatbázisába (élő: `db_query`, előnézet: `db_write` `set`, meglévő dokumentumnál `ifVersion`-nel), változtatás nélkül. Az előnézet linkje a PR-leírásba és a válaszba is bekerül.
 - **Ha egy ütemezett feladat elveszik** (pl. törlés után): az `ops/` alatti fájlból kell újra létrehozni, a név, az ütemezés és az utasítás szó szerint, automatikus jóváhagyással, a felhőben. Utána az új azonosítót be kell írni ide, a „A projekt röviden” részbe (PR-ral).
-- Ha a napi feladat utasítása változik: a feladatot is frissíteni kell (`update_trigger`), és az `ops/scheduled-task-prompt.md`-t is, ugyanabban a PR-ban.
+- Ha a napi feladat (benzin vagy videókártya) utasítása változik: a feladatot is frissíteni kell (`update_trigger`), és a hozzá tartozó `ops/` fájlt is (`scheduled-task-prompt.md`, illetve `gpu-task-prompt.md`), ugyanabban a PR-ban.
 - Az adatbázisba kitalált vagy mintaadat soha nem kerül. A teszt csak mockolt adatbázissal dolgozik.
 
 ## Döntések (legújabb felül)
 
+- **2026-11-19 – Videókártya-árak a benzin alatt: Gigabyte RTX 5070 Ti Gaming OC, 5070 Ti Eagle OC SFF, 5080 Gaming OC.** *Indok:* a felhasználó „ASUS Gaming OC és Eagle” 5070 Ti-t és 5080-at kért; a Gaming OC és az Eagle a Gigabyte sorozatai, a felhasználó a Gigabyte-ot választotta. RTX 5080 Eagle nem létezik, ezért abból csak a Gaming OC van. Az Eagle OC SFF a fekete változat (az ICE külön termék).
+- **2026-11-19 – Videókártya-ár: az Árukereső legolcsóbb ára, mellette az Alza ára.** *Indok:* a felhasználó az Árukereső legolcsóbb árát választotta. Az Árukereső termékoldalai és több listája a WebFetch-nek „client_error”-t ad, csak az 5070 Ti-s kategórialista működött; az Alza termékoldalai megbízhatóan olvashatók. Ezért mindkettőt rögzítjük, az oldalon két nézetben. A kettő 2026-11-19-én ellentmondott egymásnak (Alza 409 990 Ft < Árukereső legolcsóbb 535 680 Ft ugyanarra a kártyára), és élőben nem lehetett eldönteni, melyik a friss; ezért kézzel nem írtunk be árat, az első adatot a napi feladat hozta.
+- **2026-11-19 – Külön ütemezett feladat a videókártyákhoz, 10:35-kor.** *Indok:* így a két adatgyűjtés hibája nem hat egymásra, és a benzinfeladat utasítása változatlan marad.
+- **2026-11-19 – A benzin- és a videókártya-rész közös kódot használ (`makeBoard`).** *Indok:* a felhasználó „ugyanúgy” kérte; így a két rész viselkedése (nem friss ár „!” jellel, kikapcsolható vonalak, táblázat) garantáltan azonos.
 - **2026-11-12 – Az ütemezett feladatok azonosítója csak a `CLAUDE.md`-ben szerepel, az `ops/` fájlokban nem.** *Indok:* a két feladatot törlés után újra kellett létrehozni (új azonosítók: napi `trig_014Wn2DqKxeVYLwMReaoytSS`, élesítés `trig_01Akn5KntCGmtcUAL7wnHAb8`); az `ops/` fájlok a feladat újralétrehozásához kellenek, és az azonosító újralétrehozáskor úgyis változik.
 - **2026-11-12 – PR-előnézet külön artifacton, az élő adatok másolatával.** A PR megnyitásakor Claude kiteszi a PR változatát az előnézeti artifactra „ELŐNÉZET” sávval (`ops/make_preview.py`), és átmásolja az élő árakat. *Indok:* a felhasználó a PR merge előtt akarja látni a változást, hogy a hibák még a PR-ba kerülhessenek; az élő adatok másolata nem kitalált adat.
 - **2026-11-12 – Automatikus élesítés merge után, óránkénti ütemezett feladattal (7:40–21:40, CET).** *Indok:* a felhasználó kérte, hogy a merge után ne kézzel kelljen élesíteni. A GitHub nem tud közvetlenül artifactot frissíteni, és a merge-ről a Claude-munkamenet nem kap értesítést, ezért egy rendszeres ellenőrzés kell; a felhasználó a 8 és 22 óra közötti óránkénti gyakoriságot választotta (a perc a torlódás elkerülésére 40). Merge után legfeljebb kb. egy óra múlva élesedik.
