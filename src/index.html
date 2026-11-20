@@ -17,7 +17,8 @@
     --s-omv: #2a78d6;
     --s-avia: #eb6834;
     --s-mpetrol: #1baf7a;
-    --s-dallas: #eda100;
+    --s-shell: #eda100;
+    --s-auchan: #e87ba4;
     --s-national: #8a8984;
     --up: #b4352f;
     --down: #1f7a3d;
@@ -38,7 +39,8 @@
       --s-omv: #3987e5;
       --s-avia: #d95926;
       --s-mpetrol: #199e70;
-      --s-dallas: #c98500;
+      --s-shell: #c98500;
+      --s-auchan: #d55181;
       --s-national: #8f8e88;
       --up: #e66767;
       --down: #4cbf6f;
@@ -51,7 +53,7 @@
     color-scheme: dark;
     --surface-0: #121211; --surface-1: #1a1a19; --border: #2e2e2c; --grid: #262624;
     --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e88;
-    --s-omv: #3987e5; --s-avia: #d95926; --s-mpetrol: #199e70; --s-dallas: #c98500; --s-national: #8f8e88;
+    --s-omv: #3987e5; --s-avia: #d95926; --s-mpetrol: #199e70; --s-shell: #c98500; --s-auchan: #d55181; --s-national: #8f8e88;
     --up: #e66767; --down: #4cbf6f; --chip-off: #3a3a37; --warn: #f5c45a; --warn-bg: #4a3a12;
   }
   * { box-sizing: border-box; }
@@ -69,7 +71,7 @@
     padding: 6px 14px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer;
   }
   .tab[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); border-color: var(--text-primary); }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
   .card {
     background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
     border-top: 4px solid var(--c);
@@ -139,7 +141,7 @@
 <div class="wrap">
   <header>
     <h1>Benzinárak a környéken</h1>
-    <p>OMV Soroksár · AVIA Kőbánya · M.Petrol (az elefántos) · Dallas Kőbánya — minden nap 10:20-kor frissül</p>
+    <p>OMV Soroksár · AVIA Kőbánya · M.Petrol (az elefántos) · Shell Gloriett · Auchan Soroksár — minden nap 10:20-kor frissül</p>
     <div class="meta" id="meta">Adatok betöltése…</div>
   </header>
 
@@ -187,14 +189,15 @@
       <li>Az országos átlag a holtankoljak.hu napi közléséből van, viszonyítási alapnak.</li>
       <li>Csak városi kutakat figyelünk, autópályás árakat nem.</li>
       <li>Az AVIA-nál november 11-ig a vecsési (Üllői út 812.) kút volt beállítva, ahhoz nem volt friss ár; azóta a Keresztúri úti kút szerepel.</li>
-      <li>A grafikon az első frissítés napjától (2026. november 11.) töltődik fel; 30 nap után mindig az utolsó 30 nap látszik.</li>
+      <li>A grafikon az első frissítés napjától (2026. november 11.) töltődik fel; 30 nap után mindig az utolsó 30 nap látszik. A Shell (Gloriett) és az Auchan (Soroksár) 2026. november 20-tól szerepel.</li>
+      <li>A Dallas (X., Száva utca 5–7.) november 20-ig szerepelt; egyik ár-összehasonlító oldalon sem volt hozzá benzinár (a myLPG szerint csak autógázt árul), ezért kikerült.</li>
       <li>Videókártyák: az „Árukereső legolcsóbb” az <a href="https://www.arukereso.hu/videokartya-c3142/rtx-5070-ti/">arukereso.hu</a> aznapi legalacsonyabb ára az adott kártyára (bármelyik boltból), az „Alza ár” az <a href="https://www.alza.hu/">alza.hu</a> saját ára. A két szám egymás ellenőrzésére is szolgál.</li>
       <li>RTX 5080-ból a Gigabyte-nak nincs Eagle változata, ezért abból csak a Gaming OC szerepel. Az Eagle OC SFF a fekete változat; a fehér (ICE) külön termék, az nem szerepel.</li>
       <li>A videókártya-grafikon 2026. november 19-től töltődik fel.</li>
     </ul>
   </div>
   <div class="status" id="status"></div>
-  <div class="status">v0.6.0</div>
+  <div class="status">v0.7.0</div>
 </div>
 
 <script>
@@ -427,7 +430,8 @@
       { key: "omv",      name: "OMV",        addr: "Soroksár, Nagykőrösi út 349.", color: "--s-omv" },
       { key: "avia",     name: "AVIA",       addr: "X., Keresztúri út 108/a",      color: "--s-avia" },
       { key: "mpetrol",  name: "M.Petrol",   addr: "XIX., Citroën utca 2.",        color: "--s-mpetrol" },
-      { key: "dallas",   name: "Dallas",     addr: "X., Száva utca 5–7.",          color: "--s-dallas" },
+      { key: "shell",    name: "Shell Gloriett",  addr: "XVIII., Cziffra György út 13.", color: "--s-shell" },
+      { key: "auchan",   name: "Auchan Soroksár", addr: "XXIII., Bevásárló utca 2.",     color: "--s-auchan" },
       { key: "national", name: "Országos átlag", addr: "holtankoljak.hu",          color: "--s-national", dashed: true },
     ],
     metrics: [

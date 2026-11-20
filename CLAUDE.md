@@ -8,9 +8,9 @@ A projekt a **dev-workflow** skill szerint működik. Új munkamenet elején: el
 - **Oldal:** `src/index.html`, egyetlen önálló HTML-fájl, a diagram kézzel írt SVG. claude.ai artifactként fut: slug `82aa5e36-0b9b-41e0-9bfb-6415d1f198d6`, https://claude.ai/artifact/H8qb55y2bJKe6Ewr1kxdFK
 - **Tagelés:** `.github/workflows/tag-release.yml` – merge után a `VERSION` alapján.
 - **Előnézet:** külön artifact, slug `5b02d724-566f-4cf2-92fa-8dd3a66be135`, https://claude.ai/artifact/CEq78EWUwDydsbWYSspjkx – mindig az éppen nyitott PR változata, „ELŐNÉZET” sávval, az élő adatok másolatával.
-- **Élesítés:** ütemezett feladat `trig_01Akn5KntCGmtcUAL7wnHAb8`, óránként 7:40 és 21:40 között (CET): ha a `main` verziója újabb, mint az élő oldalé, kiteszi a `main` `src/index.html`-jét. Az utasítás másolata: `ops/deploy-task-prompt.md`.
-- **Napi frissítés:** ütemezett feladat `trig_014Wn2DqKxeVYLwMReaoytSS`, minden nap 10:20 (CET, `CRON_TZ=CET`). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
-- **Videókártya-árak:** ütemezett feladat `trig_01V2YBC9sRfcixg2hzfCZpJs`, minden nap 10:35 (CET, `CRON_TZ=CET`), a `gpus` kollekcióba ír. Az utasítás másolata: `ops/gpu-task-prompt.md`.
+- **Élesítés:** ütemezett feladat `trig_01R1ZKpCRURExAk4Azh5fPEX`, óránként 7:40 és 21:40 között (CET): ha a `main` verziója újabb, mint az élő oldalé, kiteszi a `main` `src/index.html`-jét. Az utasítás másolata: `ops/deploy-task-prompt.md`.
+- **Napi frissítés:** ütemezett feladat `trig_01W1WzvYT8guyYSEzPjeFVgW`, minden nap 10:20 (CET, `CRON_TZ=CET`). Az utasítás másolata: `ops/scheduled-task-prompt.md`.
+- **Videókártya-árak:** ütemezett feladat `trig_016RrWAENmSzA73JFXVwqBkp`, minden nap 10:35 (CET, `CRON_TZ=CET`), a `gpus` kollekcióba ír. Az utasítás másolata: `ops/gpu-task-prompt.md`.
 - **Verzió:** a `VERSION` fájlban, a lábléc (`src/index.html`) is mutatja.
 
 ## Adatmodell
@@ -26,7 +26,8 @@ Kollekció: `prices`, dokumentumazonosító: `YYYY-MM-DD` (budapesti nap). Írni
     "omv":     { "b95": 597, "b95p": null, "b100": null, "src": "petromap.eu" },
     "avia":    { "b95": 595, "b95p": null, "b100": null, "src": "petromap.eu" },
     "mpetrol": { "b95": 599, "b95p": null, "b100": null, "src": "petromap.eu" },
-    "dallas":  { "b95": null, "b95p": null, "b100": null, "src": null, "note": "nem volt friss ár" }
+    "shell":   { "b95": 579, "b95p": null, "b100": 671, "src": "petromap.eu" },
+    "auchan":  { "b95": null, "b95p": null, "b100": null, "src": null, "note": "nem volt friss ár" }
   }
 }
 ```
@@ -62,6 +63,9 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 - Az adatbázisba kitalált vagy mintaadat soha nem kerül. A teszt csak mockolt adatbázissal dolgozik.
 
 ## Döntések (legújabb felül)
+
+- **2026-11-20 – Új kutak: Shell, XVIII., Cziffra György út 13. (Gloriett lakótelep) és Auchan Soroksár, XXIII., Bevásárló utca 2.; a Dallas kikerült.** Kulcsok: `shell`, `auchan`. Források: https://petromap.eu/hu/station/shell-budapest-8c7834 (a myLPG „Shell Budapest – Gloriett Ltp” kútjával azonos koordináta) és https://petromap.eu/hu/station/auchan-budapest-200a34 (az „Auchan Budapest 1” egy másik kút). *Indok:* a felhasználó kérte a két kutat, és azt, hogy a Dallas kerüljön ki, ha újabb keresésre sincs ára. A Dallas nincs a petromapon, a fuelo.net botvédelmet ad, a myLPG szerint csak autógázt árul; 9 napig egyszer sem volt ára. A régi rekordokban a `dallas` mező megmarad, az oldal nem mutatja.
+- **2026-11-20 – A projektbe költözéskor az ütemezett feladatok új azonosítót kaptak** (napi `trig_01W1WzvYT8guyYSEzPjeFVgW`, élesítés `trig_01R1ZKpCRURExAk4Azh5fPEX`, videókártya `trig_016RrWAENmSzA73JFXVwqBkp`). Az élesítő és a videókártya-feladat ki van kapcsolva.
 
 - **2026-11-19 – Videókártya-árak a benzin alatt: Gigabyte RTX 5070 Ti Gaming OC, 5070 Ti Eagle OC SFF, 5080 Gaming OC.** *Indok:* a felhasználó „ASUS Gaming OC és Eagle” 5070 Ti-t és 5080-at kért; a Gaming OC és az Eagle a Gigabyte sorozatai, a felhasználó a Gigabyte-ot választotta. RTX 5080 Eagle nem létezik, ezért abból csak a Gaming OC van. Az Eagle OC SFF a fekete változat (az ICE külön termék).
 - **2026-11-19 – Videókártya-ár: az Árukereső legolcsóbb ára, mellette az Alza ára.** *Indok:* a felhasználó az Árukereső legolcsóbb árát választotta. Az Árukereső termékoldalai és több listája a WebFetch-nek „client_error”-t ad, csak az 5070 Ti-s kategórialista működött; az Alza termékoldalai megbízhatóan olvashatók. Ezért mindkettőt rögzítjük, az oldalon két nézetben. A kettő 2026-11-19-én ellentmondott egymásnak (Alza 409 990 Ft < Árukereső legolcsóbb 535 680 Ft ugyanarra a kártyára), és élőben nem lehetett eldönteni, melyik a friss; ezért kézzel nem írtunk be árat, az első adatot a napi feladat hozta.
@@ -99,4 +103,4 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 - **2026-11-11 – Írási jog csak a tulajdonosé, olvasás mindenkié, aki látja az oldalt.** *Indok:* a napi feladat a tulajdonos nevében ír; a nézők ne tudják átírni az árakat.
 - **2026-11-11 – Perzisztencia: az artifact saját adatbázisa,** napi egy dokumentum. *Indok:* az oldal közvetlenül olvassa, nincs szükség külső szerverre.
 - **2026-11-11 – Üzemanyag: elsősorban a 95-ös benzin;** a prémium 95 és a 100-as opcionális mező. *Indok:* „benzin főleg, de mindegyik fajta”, később „a 95-ös elég”.
-- **2026-11-11 – Figyelt kutak:** OMV Nagykőrösi út 349. (XXIII.), AVIA (lásd fent), M.Petrol Citroën utca 2. (XIX.), Dallas Száva utca 5–7. (X.). *Indok:* a felhasználó választása.
+- **2026-11-11 – Figyelt kutak** (2026-11-20 óta Dallas helyett Shell és Auchan, lásd fent)**:** OMV Nagykőrösi út 349. (XXIII.), AVIA (lásd fent), M.Petrol Citroën utca 2. (XIX.), Dallas Száva utca 5–7. (X.). *Indok:* a felhasználó választása.

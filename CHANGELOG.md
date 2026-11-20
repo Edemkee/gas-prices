@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.7.0 - 2026-11-20
+### Added
+- Két új kút a benzinárak között, kártyával, grafikonvonallal és táblázatoszloppal: Shell Gloriett (XVIII., Cziffra György út 13.) és Auchan Soroksár (XXIII., Bevásárló utca 2.)
+- A napi feladat (`ops/scheduled-task-prompt.md`) gyűjti a két új kút árát (`shell`, `auchan`)
+### Removed
+- Dallas (X., Száva utca 5–7.): egyik forrásban sem volt hozzá benzinár; a régi rekordokban maradt mezőt az oldal nem mutatja
+### Changed
+- A kártyák rácsa keskenyebb oszlopokat enged, így asztali nézetben a hat kártya egy sorba fér
+- CLAUDE.md: az ütemezett feladatok új azonosítói (a projektbe költözés után)
+
 ## v0.6.0 - 2026-11-20
 ### Added
 - Videókártya-árak a benzin alatt: Gigabyte RTX 5070 Ti Gaming OC, RTX 5070 Ti Eagle OC SFF és RTX 5080 Gaming OC; kártyák, 30 napos grafikon, táblázat, két nézet (Árukereső legolcsóbb / Alza ár), a hiányzó ár „!” jellel pótolva

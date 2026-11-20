@@ -1,8 +1,8 @@
 # Benzinárak – XVIII–XIX. kerület környéke
 
-Egy weboldal, amely négy budapesti benzinkút napi benzinárait és az országos átlagot mutatja, 30 napos trenddiagrammal. Minden nap 10:20-kor automatikusan frissül. Alatta három Gigabyte videókártya (RTX 5070 Ti Gaming OC, RTX 5070 Ti Eagle OC SFF, RTX 5080 Gaming OC) napi árai látszanak ugyanígy, 10:35-ös frissítéssel.
+Egy weboldal, amely öt budapesti benzinkút napi benzinárait és az országos átlagot mutatja, 30 napos trenddiagrammal. Minden nap 10:20-kor automatikusan frissül. Alatta három Gigabyte videókártya (RTX 5070 Ti Gaming OC, RTX 5070 Ti Eagle OC SFF, RTX 5080 Gaming OC) napi árai látszanak ugyanígy, 10:35-ös frissítéssel.
 
-Figyelt kutak: OMV (XXIII., Nagykőrösi út 349.), AVIA (X., Keresztúri út 108/a), M.Petrol (XIX., Citroën utca 2.), Dallas (X., Száva utca 5–7.), valamint az országos átlag (holtankoljak.hu).
+Figyelt kutak: OMV (XXIII., Nagykőrösi út 349.), AVIA (X., Keresztúri út 108/a), M.Petrol (XIX., Citroën utca 2.), Shell (XVIII., Cziffra György út 13., a Gloriett lakótelepnél), Auchan Soroksár (XXIII., Bevásárló utca 2.), valamint az országos átlag (holtankoljak.hu).
 
 Repó: https://github.com/Edemkee/gas-prices
 
