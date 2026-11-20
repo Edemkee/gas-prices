@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.6.0 - 2026-11-20
+### Added
+- Videókártya-árak a benzin alatt: Gigabyte RTX 5070 Ti Gaming OC, RTX 5070 Ti Eagle OC SFF és RTX 5080 Gaming OC; kártyák, 30 napos grafikon, táblázat, két nézet (Árukereső legolcsóbb / Alza ár), a hiányzó ár „!” jellel pótolva
+- Új ütemezett feladat minden nap 10:35-kor (CET), a `gpus/YYYY-MM-DD` kollekcióba ír (`ops/gpu-task-prompt.md`)
+### Changed
+- A benzin- és a videókártya-rész ugyanazt a kódot használja (`makeBoard`); a benzinrész viselkedése nem változott
+- Smoke teszt: a videókártya-rész ellenőrzései, a mock gyűjteményenként ad adatot
+
 ## v0.5.1 - 2026-11-12
 ### Fixed
 - A két ütemezett feladatot (napi frissítés, élesítés) törlés után újra kellett létrehozni az `ops/` alatti definíciókból; a CLAUDE.md az új azonosítókat tartalmazza

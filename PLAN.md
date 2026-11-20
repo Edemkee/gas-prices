@@ -19,6 +19,8 @@
 | 26 | Automatikus tagelés merge után (GitHub Actions, `VERSION` alapján) | done | v0.3.6; a `v0.3.6` tag automatikusan elkészült |
 | 27 | PR-előnézet külön artifacton + automatikus élesítés merge után (óránként 7:40–21:40) | done | v0.5.0; a `v0.5.0` tag automatikusan elkészült |
 | 28 | Ütemezett feladatok újralétrehozása törlés után, azonosítók frissítése | done | v0.5.1 |
+| 29 | Videókártya-árak: Gigabyte 5070 Ti Gaming OC / Eagle OC SFF, 5080 Gaming OC; napi feladat 10:35 | in progress | v0.6.0; az 5080-ból nincs Eagle |
+| 30 | Videókártya-források átnézése az első napok után (Árukereső elérhetősége, Alza vs. Árukereső eltérés) | open | 2026-11-19-én az Árukereső termékoldalai és az 5080-as lista „client_error”-t adtak; az 5070 Ti-s lista működött |
 | 12 | GitHub secret scanning és push protection bekapcsolása | done | 2026-11-12, a felhasználó bekapcsolta (Secret Protection + push protection) |
 | 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | in progress | nov. 12.: a 7:03-as futás túl korai volt (nem mai átlag, tegnapi kútárak) → 10:20-ra téve (v0.4.0), a mai rekord kézi újrafuttatással javítva (átlag 597,6 Ft; a kútárak a petromap szerint változatlanok) |
 | 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
