@@ -58,7 +58,7 @@ Egy nem friss ár rekordja: `{ "b95": 601.3, "src": "fuelo.net", "stale": true, 
 - Az oldal módosítása: `src/index.html` szerkesztése, smoke teszt, PR. **Az élő artifactra Claude kézzel nem publikál**; azt merge után az élesítő feladat teszi ki.
 - **Előnézet minden PR-nál:** a PR megnyitásakor (és minden új commit után) `python3 ops/make_preview.py "PR #<n> · v<VERSION>" /home/claude/preview/index.html`, majd `publish_files` az előnézeti artifactra (`mode: patch`, `as: index.html`). Előtte az élő `prices` rekordokat át kell másolni az előnézet adatbázisába (élő: `db_query`, előnézet: `db_write` `set`, meglévő dokumentumnál `ifVersion`-nel), változtatás nélkül. Az előnézet linkje a PR-leírásba és a válaszba is bekerül.
 - **Ha egy ütemezett feladat elveszik** (pl. törlés után): az `ops/` alatti fájlból kell újra létrehozni, a név, az ütemezés és az utasítás szó szerint, automatikus jóváhagyással, a felhőben. Utána az új azonosítót be kell írni ide, a „A projekt röviden” részbe (PR-ral).
-- Ha a napi feladat (benzin vagy videókártya) utasítása változik: a feladatot is frissíteni kell (`update_trigger`), és az `ops/scheduled-task-prompt.md`-t is, ugyanabban a PR-ban.
+- Ha a napi feladat (benzin vagy videókártya) utasítása változik: a feladatot is frissíteni kell (`update_trigger`), és a hozzá tartozó `ops/` fájlt is (`scheduled-task-prompt.md`, illetve `gpu-task-prompt.md`), ugyanabban a PR-ban.
 - Az adatbázisba kitalált vagy mintaadat soha nem kerül. A teszt csak mockolt adatbázissal dolgozik.
 
 ## Döntések (legújabb felül)
