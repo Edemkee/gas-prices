@@ -19,7 +19,8 @@ Az oldal: artifact slug 82aa5e36-0b9b-41e0-9bfb-6415d1f198d6 (https://claude.ai/
    - omv = OMV, Budapest XXIII., Nagykőrösi út 349. Elsődleges forrás: WebFetch https://petromap.eu/hu/station/omv-budapest-9e4502 (a "Benzin ma X Ft" a 95-ös ár). Tartalék: WebSearch "holtankoljak OMV Nagykőrösi út 349".
    - avia = AVIA, Budapest X., Keresztúri út 108/a. Elsődleges forrás: WebFetch https://petromap.eu/hu/station/avia-budapest-f1b709 ("Benzin ma X Ft"). Tartalék: WebSearch "holtankoljak AVIA Keresztúri út 108".
    - mpetrol = M.Petrol ("az elefántos"), Budapest XIX., Citroën utca 2. (1194). Petromapon "M.Petrol Budapest 2" néven szerepel (koordináta 47.4368, 19.1438): WebFetch https://petromap.eu/hu/station/m-petrol-budapest-0758e5. Tartalék: https://es.fuelo.net/gasstation/id/65124?lang=hu.
-   - dallas = Dallas, Budapest X., Száva utca 5–7. Próbáld: WebSearch "petromap Dallas Száva utca", "holtankoljak Dallas Száva utca", és https://gr.fuelo.net/gasstation/id/87324.
+   - shell = Shell, Budapest XVIII., Cziffra György út 13. (a Gloriett lakótelepnél). Petromapon "Shell Cziffra György Ut. 13.": WebFetch https://petromap.eu/hu/station/shell-budapest-8c7834 – a "FuelSave Euro 95" a b95, a "V-Power Racing" a b100 (ha "ma" vagy mai dátumú). Tartalék: WebSearch "holtankoljak Shell Cziffra György út".
+   - auchan = Auchan Soroksár, Budapest XXIII., Bevásárló utca 2. Petromapon "Auchan Bevásárló utca 2": WebFetch https://petromap.eu/hu/station/auchan-budapest-200a34 – a "Benzin 95" a b95, a "Benzin 100" a b100. Vigyázz: az "Auchan Budapest 1" (auchan-budapest-230a39) egy másik kút, azt ne használd. Tartalék: WebSearch "holtankoljak Auchan Soroksár".
    - national = országos átlag: WebSearch "holtankoljak üzemanyagár mai átlagár" vagy WebFetch https://holtankoljak.hu/ – a mai (vagy a legutóbbi hétköznapi) 95-ös benzin országos átlagár b95-be.
 
    Szabályok:
@@ -38,7 +39,8 @@ Az oldal: artifact slug 82aa5e36-0b9b-41e0-9bfb-6415d1f198d6 (https://claude.ai/
     "omv":     { "b95": n|null, "b95p": n|null, "b100": n|null, "src": "<forrás domain>"|null, "stale": true|false, "asOf": "YYYY-MM-DD"|null, "note": "<opcionális>" },
     "avia":    { ...ugyanígy... },
     "mpetrol": { ...ugyanígy... },
-    "dallas":  { ...ugyanígy... }
+    "shell":   { ...ugyanígy... },
+    "auchan":  { ...ugyanígy... }
   }
 }
 Az "asOf" mező csak nem friss árnál kell; friss árnál elhagyható. A számok sima JSON számok legyenek (pl. 597 vagy 598.9), ne szövegek.

@@ -20,10 +20,11 @@
 | 27 | PR-előnézet külön artifacton + automatikus élesítés merge után (óránként 7:40–21:40) | done | v0.5.0; a `v0.5.0` tag automatikusan elkészült |
 | 28 | Ütemezett feladatok újralétrehozása törlés után, azonosítók frissítése | done | v0.5.1 |
 | 29 | Videókártya-árak: Gigabyte 5070 Ti Gaming OC / Eagle OC SFF, 5080 Gaming OC; napi feladat 10:35 | in progress | v0.6.0; az 5080-ból nincs Eagle |
+| 31 | Új kutak: Shell Gloriett (XVIII., Cziffra György út 13.) és Auchan Soroksár (XXIII., Bevásárló utca 2.) | done | v0.7.0; a napi feladat 2026-11-21-től gyűjti |
 | 30 | Videókártya-források átnézése az első napok után (Árukereső elérhetősége, Alza vs. Árukereső eltérés) | open | 2026-11-19-én az Árukereső termékoldalai és az 5080-as lista „client_error”-t adtak; az 5070 Ti-s lista működött |
 | 12 | GitHub secret scanning és push protection bekapcsolása | done | 2026-11-12, a felhasználó bekapcsolta (Secret Protection + push protection) |
 | 13 | Az első napi futások átnézése (nov. 12–14.): melyik forrás működik | in progress | nov. 12.: a 7:03-as futás túl korai volt (nem mai átlag, tegnapi kútárak) → 10:20-ra téve (v0.4.0), a mai rekord kézi újrafuttatással javítva (átlag 597,6 Ft; a kútárak a petromap szerint változatlanok) |
-| 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | open | most nincs ismert ára; a fuelo 656,2 Ft-os becslése ki van szűrve |
+| 14 | Dallas (Száva u.): döntés, ha egy hét után sincs ára | done | v0.7.0: kikerült, 9 nap alatt egyszer sem volt ára (a myLPG szerint csak autógázt árul) |
 | 15 | Napi JSON-export a repóba (`data/YYYY-MM-DD.json`) biztonsági mentésként | open | a 11. után |
 | 16 | Figyelmeztetés az oldalon, ha a legutóbbi frissítés több napos | open | |
 | 17 | Átköltözés Netlify-ra: oldal + Scheduled Function + Netlify Blobs | open | opció; lásd a megjegyzést lent |

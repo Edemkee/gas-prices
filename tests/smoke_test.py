@@ -2,7 +2,7 @@
 
 Renders the page in headless Chrome with a mocked `claude.use("db")` that serves
 sample (fake) price records, then checks the main behaviour:
-  - the five cards render, with the latest price
+  - the six cards render, with the latest price
   - a missing day falls back to the last known price and shows the "!" badge
   - a record stored as stale (stale: true) shows the "!" badge
   - a station that never had a price shows "nincs adat"
@@ -31,7 +31,8 @@ OUT = ROOT / "tests" / "out"
 
 def sample_days():
     """10 days of fake data. Last day: omv fresh, avia missing (carried over),
-    mpetrol stored stale, dallas never had a price."""
+    mpetrol stored stale, shell never had a price, auchan fresh (added on day 8).
+    Old days still carry a "dallas" record, like the live data does: it must be ignored."""
     base = datetime.date(2026, 11, 2)
     days = []
     for i in range(10):
@@ -47,6 +48,8 @@ def sample_days():
                 "mpetrol": ({"b95": 590, "src": "fuelo.net", "stale": True, "asOf": "2026-11-08"}
                             if last else {"b95": 600 - i, "src": "petromap.eu"}),
                 "dallas": {"b95": None, "src": None, "note": "nem volt friss ár"},
+                "shell": {"b95": None, "src": None, "note": "nem volt friss ár"},
+                **({"auchan": {"b95": 579 - (i - 7), "b100": 649, "src": "petromap.eu"}} if i >= 7 else {}),
             },
         })
     return days
@@ -109,14 +112,18 @@ async def main():
             tag = f"[{scheme} {width}px]"
 
             cards = await page.locator("#cards .card").all_inner_texts()
-            check(len(cards) == 5, f"{tag} 5 cards rendered")
-            omv, avia, mpetrol, dallas = cards[0], cards[1], cards[2], cards[3]
+            check(len(cards) == 6, f"{tag} 6 cards rendered")
+            omv, avia, mpetrol, shell, auchan = cards[0], cards[1], cards[2], cards[3], cards[4]
             check("596" in omv and "!" not in omv, f"{tag} OMV shows fresh latest price without '!'")
             check("595" in avia and "!" in avia and "nov. 10." in avia,
                   f"{tag} AVIA missing day falls back to last known price with '!' and its date")
             check("590" in mpetrol and "!" in mpetrol and "nov. 8." in mpetrol,
                   f"{tag} M.Petrol stored-stale price shows '!' with asOf date")
-            check("nincs adat" in dallas, f"{tag} Dallas without any price shows 'nincs adat'")
+            check("nincs adat" in shell and "Shell" in shell, f"{tag} Shell without any price shows 'nincs adat'")
+            check("577" in auchan and "!" not in auchan and "Auchan" in auchan,
+                  f"{tag} Auchan (added later) shows its fresh latest price")
+            body = await page.locator("#cards, #legend, #table").all_inner_texts()
+            check(not any("Dallas" in t for t in body), f"{tag} Dallas no longer appears in cards, legend or table")
 
             check(await page.locator("#chart svg path").count() >= 3, f"{tag} chart lines rendered")
             hollow = await page.locator('#chart svg circle[stroke-width="2"]').count()
